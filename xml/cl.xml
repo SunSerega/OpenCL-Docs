@@ -5141,10 +5141,10 @@ server's OpenCL/api-docs repository.
             <enum name="CL_PIPE_PACKET_SIZE" info_type="cl_uint"/>
             <enum name="CL_PIPE_MAX_PACKETS" info_type="cl_uint"/>
         </require>
-        <require group="cl_sampler_properties" etype="property list">
-            <enum name="CL_SAMPLER_MIP_FILTER_MODE" followed="cl_filter_mode"/>
-            <enum name="CL_SAMPLER_LOD_MIN" followed="cl_float"/>
-            <enum name="CL_SAMPLER_LOD_MAX" followed="cl_float"/>
+        <require group="cl_sampler_info" etype="obj info">
+            <enum name="CL_SAMPLER_MIP_FILTER_MODE" info_type="cl_filter_mode"/>
+            <enum name="CL_SAMPLER_LOD_MIN" info_type="cl_float"/>
+            <enum name="CL_SAMPLER_LOD_MAX" info_type="cl_float"/>
         </require>
         <require group="cl_program_build_info" etype="obj info">
             <enum name="CL_PROGRAM_BUILD_GLOBAL_VARIABLE_TOTAL_SIZE" info_type="size_t"/>
