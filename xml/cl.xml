@@ -2983,7 +2983,7 @@ server's OpenCL/api-docs repository.
             <proto><type>cl_error_code</type>                   <name>clGetMemAllocInfoINTEL</name></proto>
             <param><type>cl_context</type>                      <name>context</name></param>
             <param>const <type>void</type>*                     <name>ptr</name></param>
-            <param><type>cl_mem_info</type>               <name>param_name</name></param>
+            <param><type>cl_mem_info_intel</type>               <name>param_name</name></param>
             <param><type>size_t</type>                          <name>param_value_size</name></param>
             <param><type>void</type>*                           <name>param_value</name></param>
             <param><type>size_t</type>*                         <name>param_value_size_ret</name></param>
@@ -4427,7 +4427,7 @@ server's OpenCL/api-docs repository.
         </require>
         <require group="cl_device_info" etype="obj info">
             <enum name="CL_DEVICE_TYPE" info_type="cl_device_type"/>
-            <enum name="CL_DEVICE_VENDOR_ID" info_type="cl_uint"/>
+            <enum name="CL_DEVICE_VENDOR_ID" info_type="cl_khronos_vendor_id"/>
             <enum name="CL_DEVICE_MAX_COMPUTE_UNITS" info_type="cl_uint"/>
             <enum name="CL_DEVICE_MAX_WORK_ITEM_DIMENSIONS" info_type="cl_uint"/>
             <enum name="CL_DEVICE_MAX_WORK_GROUP_SIZE" info_type="size_t"/>
@@ -6007,7 +6007,7 @@ server's OpenCL/api-docs repository.
                 <type name="cl_device_svm_capabilities_arm"/>
             </require>
             <require group="cl_device_info" etype="obj info">
-                <enum name="CL_DEVICE_SVM_CAPABILITIES_ARM" info_type="cl_device_svm_capabilities"/>
+                <enum name="CL_DEVICE_SVM_CAPABILITIES_ARM" info_type="cl_device_svm_capabilities_arm"/>
             </require>
             <require group="cl_mem_info" etype="obj info">
                 <enum name="CL_MEM_USES_SVM_POINTER_ARM" info_type="cl_bool"/>
@@ -6920,8 +6920,8 @@ server's OpenCL/api-docs repository.
             </require>
             <require group="cl_device_info" etype="obj info">
                 <enum name="CL_DEVICE_INTEGER_DOT_PRODUCT_CAPABILITIES_KHR" info_type="cl_device_integer_dot_product_capabilities_khr"/>
-                <enum name="CL_DEVICE_INTEGER_DOT_PRODUCT_ACCELERATION_PROPERTIES_8BIT_KHR" info_type="cl_device_integer_dot_product_capabilities_khr"/>
-                <enum name="CL_DEVICE_INTEGER_DOT_PRODUCT_ACCELERATION_PROPERTIES_4x8BIT_PACKED_KHR" info_type="cl_device_integer_dot_product_capabilities_khr"/>
+                <enum name="CL_DEVICE_INTEGER_DOT_PRODUCT_ACCELERATION_PROPERTIES_8BIT_KHR" info_type="cl_device_integer_dot_product_acceleration_properties_khr"/>
+                <enum name="CL_DEVICE_INTEGER_DOT_PRODUCT_ACCELERATION_PROPERTIES_4x8BIT_PACKED_KHR" info_type="cl_device_integer_dot_product_acceleration_properties_khr"/>
             </require>
         </extension>
         <extension name="cl_khr_semaphore" supported="opencl">
