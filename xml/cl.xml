@@ -5153,8 +5153,8 @@ server's OpenCL/api-docs repository.
             <enum name="CL_KERNEL_ARG_TYPE_PIPE"/>
         </require>
         <require group="cl_kernel_exec_info" etype="obj info">
-            <enum name="CL_KERNEL_EXEC_INFO_SVM_PTRS" info_type="void*[]"/>
-            <enum name="CL_KERNEL_EXEC_INFO_SVM_FINE_GRAIN_SYSTEM" info_type="cl_bool"/>
+            <enum name="CL_KERNEL_EXEC_INFO_SVM_PTRS" input_type="void*[]"/>
+            <enum name="CL_KERNEL_EXEC_INFO_SVM_FINE_GRAIN_SYSTEM" input_type="cl_bool"/>
         </require>
         <require group="cl_command_type">
             <enum name="CL_COMMAND_SVM_FREE"/>
@@ -6013,8 +6013,8 @@ server's OpenCL/api-docs repository.
                 <enum name="CL_MEM_USES_SVM_POINTER_ARM" info_type="cl_bool"/>
             </require>
             <require group="cl_kernel_exec_info_arm" etype="obj info">
-                <enum name="CL_KERNEL_EXEC_INFO_SVM_PTRS_ARM" info_type="void*[]"/>
-                <enum name="CL_KERNEL_EXEC_INFO_SVM_FINE_GRAIN_SYSTEM_ARM" info_type="cl_bool"/>
+                <enum name="CL_KERNEL_EXEC_INFO_SVM_PTRS_ARM" input_type="void*[]"/>
+                <enum name="CL_KERNEL_EXEC_INFO_SVM_FINE_GRAIN_SYSTEM_ARM" input_type="cl_bool"/>
             </require>
             <require group="cl_command_type">
                 <enum name="CL_COMMAND_SVM_FREE_ARM"/>
@@ -6616,10 +6616,10 @@ server's OpenCL/api-docs repository.
                 <enum name="CL_MEM_TYPE_SHARED_INTEL"/>
             </require>
             <require group="cl_kernel_exec_info" etype="obj info">
-                <enum name="CL_KERNEL_EXEC_INFO_INDIRECT_HOST_ACCESS_INTEL" info_type="cl_bool"/>
-                <enum name="CL_KERNEL_EXEC_INFO_INDIRECT_DEVICE_ACCESS_INTEL" info_type="cl_bool"/>
-                <enum name="CL_KERNEL_EXEC_INFO_INDIRECT_SHARED_ACCESS_INTEL" info_type="cl_bool"/>
-                <enum name="CL_KERNEL_EXEC_INFO_USM_PTRS_INTEL" info_type="void*[]"/>
+                <enum name="CL_KERNEL_EXEC_INFO_INDIRECT_HOST_ACCESS_INTEL" input_type="cl_bool"/>
+                <enum name="CL_KERNEL_EXEC_INFO_INDIRECT_DEVICE_ACCESS_INTEL" input_type="cl_bool"/>
+                <enum name="CL_KERNEL_EXEC_INFO_INDIRECT_SHARED_ACCESS_INTEL" input_type="cl_bool"/>
+                <enum name="CL_KERNEL_EXEC_INFO_USM_PTRS_INTEL" input_type="void*[]"/>
             </require>
             <require group="cl_command_type">
                 <enum name="CL_COMMAND_MEMFILL_INTEL"/>
@@ -6702,10 +6702,10 @@ server's OpenCL/api-docs repository.
                 <enum name="CL_DEVICE_MAX_WARP_COUNT_ARM" info_type="cl_uint"/>
             </require>
             <require group="cl_kernel_exec_info" etype="obj info">
-                <enum name="CL_KERNEL_EXEC_INFO_WORKGROUP_BATCH_SIZE_ARM" info_type="cl_uint"/>
-                <enum name="CL_KERNEL_EXEC_INFO_WORKGROUP_BATCH_SIZE_MODIFIER_ARM" info_type="cl_int"/>
-                <enum name="CL_KERNEL_EXEC_INFO_WARP_COUNT_LIMIT_ARM" info_type="cl_uint"/>
-                <enum name="CL_KERNEL_EXEC_INFO_COMPUTE_UNIT_MAX_QUEUED_BATCHES_ARM" info_type="cl_uint"/>
+                <enum name="CL_KERNEL_EXEC_INFO_WORKGROUP_BATCH_SIZE_ARM" input_type="cl_uint"/>
+                <enum name="CL_KERNEL_EXEC_INFO_WORKGROUP_BATCH_SIZE_MODIFIER_ARM" input_type="cl_int"/>
+                <enum name="CL_KERNEL_EXEC_INFO_WARP_COUNT_LIMIT_ARM" input_type="cl_uint"/>
+                <enum name="CL_KERNEL_EXEC_INFO_COMPUTE_UNIT_MAX_QUEUED_BATCHES_ARM" input_type="cl_uint"/>
             </require>
             <require group="cl_kernel_info" etype="obj info">
                 <enum name="CL_KERNEL_MAX_WARP_COUNT_ARM" info_type="cl_uint"/>
