@@ -5217,8 +5217,8 @@ server's OpenCL/api-docs repository.
         <require group="cl_kernel_sub_group_info" etype="obj info">
             <enum name="CL_KERNEL_MAX_NUM_SUB_GROUPS" info_type="size_t"/>
             <enum name="CL_KERNEL_COMPILE_NUM_SUB_GROUPS" info_type="size_t"/>
-            <enum name="CL_KERNEL_MAX_SUB_GROUP_SIZE_FOR_NDRANGE" input_type="size_t*" info_type="size_t"/>
-            <enum name="CL_KERNEL_SUB_GROUP_COUNT_FOR_NDRANGE" input_type="size_t*" info_type="size_t"/>
+            <enum name="CL_KERNEL_MAX_SUB_GROUP_SIZE_FOR_NDRANGE" input_type="size_t[]" info_type="size_t"/>
+            <enum name="CL_KERNEL_SUB_GROUP_COUNT_FOR_NDRANGE" input_type="size_t[]" info_type="size_t"/>
             <enum name="CL_KERNEL_LOCAL_SIZE_FOR_SUB_GROUP_COUNT" input_type="size_t" info_type="size_t[]"/>
         </require>
         <require comment="Platform APIs">
@@ -5908,8 +5908,8 @@ server's OpenCL/api-docs repository.
                 <type name="cl_kernel_sub_group_info"/>
             </require>
             <require group="cl_kernel_sub_group_info" etype="obj info">
-                <enum name="CL_KERNEL_MAX_SUB_GROUP_SIZE_FOR_NDRANGE_KHR" input_type="size_t*" info_type="size_t"/>
-                <enum name="CL_KERNEL_SUB_GROUP_COUNT_FOR_NDRANGE_KHR" input_type="size_t*" info_type="size_t"/>
+                <enum name="CL_KERNEL_MAX_SUB_GROUP_SIZE_FOR_NDRANGE_KHR" input_type="size_t[]" info_type="size_t"/>
+                <enum name="CL_KERNEL_SUB_GROUP_COUNT_FOR_NDRANGE_KHR" input_type="size_t[]" info_type="size_t"/>
             </require>
             <require>
                 <command name="clGetKernelSubGroupInfoKHR"/>
