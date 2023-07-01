@@ -6530,7 +6530,7 @@ server's OpenCL/api-docs repository.
                 <enum name="CL_EGL_DISPLAY_KHR" followed="intptr_t" comment="For embedded"/>
                 <enum name="CL_GLX_DISPLAY_KHR" followed="intptr_t" comment="For Linux"/>
                 <enum name="CL_WGL_HDC_KHR" followed="intptr_t" comment="For Windows"/>
-                <enum name="CL_CGL_SHAREGROUP_KHR" followed="intptr_t" comment="For macOS"/>
+                <enum name="CL_CGL_SHAREGROUP_KHR" followed="intptr_t" comment="For MacOS"/>
             </require>
             <require>
                 <type name="cl_gl_object_type"/>
@@ -7299,7 +7299,6 @@ server's OpenCL/api-docs repository.
             <require group="cl_ndrange_kernel_command_properties_khr" etype="property list">
                <enum name="CL_MUTABLE_DISPATCH_UPDATABLE_FIELDS_KHR" followed="cl_mutable_dispatch_fields_khr"/>
             </require>
-
             <require group="cl_mutable_dispatch_fields_khr" etype="bitfield">
                 <enum name="CL_MUTABLE_DISPATCH_GLOBAL_OFFSET_KHR"/>
                 <enum name="CL_MUTABLE_DISPATCH_GLOBAL_SIZE_KHR"/>
