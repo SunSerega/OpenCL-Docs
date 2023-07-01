@@ -173,7 +173,6 @@ server's OpenCL/api-docs repository.
         <type category="define">typedef <type>cl_bitfield</type>      <name>cl_device_affinity_domain</name>;</type>
         <type category="define">typedef <type>intptr_t</type>         <name>cl_context_properties</name>;</type>
         <type category="define">typedef <type>intptr_t</type>         <name>cl_context_property_diagnostics_level</name>;</type>
-        <type category="define">typedef <type>intptr_t</type>         <name>cl_context_memory_initialize_khr</name>;</type>
         <type category="define">typedef <type>cl_uint</type>          <name>cl_context_info</name>;</type>
         <type category="define">typedef <type>cl_properties</type>    <name>cl_queue_properties</name>;</type>
         <type category="define">typedef <type>cl_properties</type>    <name>cl_queue_properties_khr</name>;</type>
@@ -4369,6 +4368,8 @@ server's OpenCL/api-docs repository.
             <type name="cl_profiling_info"/>
             <type name="cl_image_format"/>
             <type name="cl_buffer_region"/>
+			<type name="cl_error_code"/>
+			<type name="cl_command_execution_status"/>
         </require>
         <require etype="constants">
             <enum name="CL_CHAR_BIT"/>
@@ -5791,6 +5792,7 @@ server's OpenCL/api-docs repository.
             </require>
             <require>
                 <type name="cl_device_partition_property_ext"/>
+                <type name="cl_affinity_domain_ext"/>
             </require>
             <require group="cl_error_code">
                 <enum name="CL_DEVICE_PARTITION_FAILED_EXT"/>
@@ -5851,6 +5853,7 @@ server's OpenCL/api-docs repository.
             <require>
                 <type name="cl_image_pitch_info_qcom"/>
                 <type name="cl_mem_ext_host_ptr"/>
+                <type name="cl_host_cache_policy"/>
             </require>
             <require group="cl_mem_flags" etype="bitfield">
                 <enum name="CL_MEM_EXT_HOST_PTR_QCOM"/>
@@ -5879,6 +5882,9 @@ server's OpenCL/api-docs repository.
             <require>
                 <type name="CL/cl.h"/>
             </require>
+            <require>
+                <type name="cl_host_cache_policy"/>
+            </require>
             <require group="cl_host_cache_policy">
                 <enum name="CL_MEM_HOST_IOCOHERENT_QCOM"/>
             </require>
@@ -5886,6 +5892,9 @@ server's OpenCL/api-docs repository.
         <extension name="cl_qcom_ion_host_ptr" supported="opencl">
             <require>
                 <type name="CL/cl.h"/>
+            </require>
+            <require>
+                <type name="cl_allocation_type"/>
             </require>
             <require>
                 <type name="cl_mem_ext_host_ptr"/>
@@ -5902,6 +5911,7 @@ server's OpenCL/api-docs repository.
             <require>
                 <type name="cl_mem_ext_host_ptr"/>
                 <type name="cl_mem_android_native_buffer_host_ptr"/>
+                <type name="cl_allocation_type"/>
             </require>
             <require group="cl_allocation_type">
                 <enum name="CL_MEM_ANDROID_NATIVE_BUFFER_HOST_PTR_QCOM"/>
@@ -6016,6 +6026,7 @@ server's OpenCL/api-docs repository.
             </require>
             <require>
                 <type name="cl_import_properties_arm"/>
+                <type name="cl_import_type_arm"/>
             </require>
             <require group="cl_import_properties_arm" etype="property list">
                 <enum name="CL_IMPORT_TYPE_ARM" followed="cl_import_type_arm"/>
@@ -6151,6 +6162,10 @@ server's OpenCL/api-docs repository.
         <extension name="cl_intel_motion_estimation" supported="opencl">
             <require>
                 <type name="cl_motion_estimation_desc_intel"/>
+                <type name="cl_mb_block_type"/>
+                <type name="cl_subpixel_mode"/>
+                <type name="cl_sad_adjust_mode"/>
+                <type name="cl_search_path_type"/>
             </require>
             <require group="cl_accelerator_type_intel">
                 <enum name="CL_ACCELERATOR_TYPE_MOTION_ESTIMATION_INTEL"/>
@@ -6176,6 +6191,9 @@ server's OpenCL/api-docs repository.
             </require>
         </extension>
         <extension name="cl_intel_advanced_motion_estimation" supported="opencl">
+            <require>
+                <type name="cl_device_me_version"/>
+            </require>
             <require group="cl_device_info" etype="obj info">
                 <enum name="CL_DEVICE_ME_VERSION_INTEL" info_type="cl_device_me_version"/>
             </require>
@@ -6271,6 +6289,7 @@ server's OpenCL/api-docs repository.
         <extension name="cl_intel_driver_diagnostics" supported="opencl">
             <require>
                 <type name="cl_diagnostics_verbose_level"/>
+                <type name="cl_context_property_diagnostics_level"/>
             </require>
             <require group="cl_context_properties" etype="property list">
                 <enum name="CL_CONTEXT_SHOW_DIAGNOSTICS_INTEL" followed="cl_context_property_diagnostics_level"/>
@@ -6296,6 +6315,9 @@ server's OpenCL/api-docs repository.
             </require>
         </extension>
         <extension name="cl_intel_device_side_avc_motion_estimation" supported="opencl">
+            <require>
+                <type name="cl_device_avc_me_version"/>
+            </require>
             <require group="cl_device_info" etype="obj info">
                 <enum name="CL_DEVICE_AVC_ME_VERSION_INTEL" info_type="cl_device_avc_me_version"/>
                 <enum name="CL_DEVICE_AVC_ME_SUPPORTS_TEXTURE_SAMPLER_USE_INTEL" info_type="cl_bool"/>
@@ -6844,6 +6866,9 @@ server's OpenCL/api-docs repository.
         <extension name="cl_img_mem_properties" supported="opencl">
             <require>
                 <type name="CL/cl.h"/>
+            </require>
+            <require>
+                <type name="cl_command_termination_reason_arm"/>
             </require>
             <require group="cl_mem_properties" etype="property list">
                 <enum name="CL_MEM_ALLOC_FLAGS_IMG" followed="cl_mem_alloc_flags_img"/>
