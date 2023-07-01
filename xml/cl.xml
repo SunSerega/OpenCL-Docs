@@ -5781,7 +5781,7 @@ server's OpenCL/api-docs repository.
                 <type name="CL/cl.h"/>
             </require>
             <require group="cl_context_properties" etype="property list">
-                <enum name="CL_PRINTF_CALLBACK_ARM" followed="intptr_t"/>
+                <enum name="CL_PRINTF_CALLBACK_ARM" followed="cl_printf_callback_arm"/>
                 <enum name="CL_PRINTF_BUFFERSIZE_ARM" followed="size_t"/>
             </require>
         </extension>
