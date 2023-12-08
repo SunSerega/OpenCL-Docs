@@ -201,10 +201,11 @@ class OpenCLConventions(ConventionsBase):
         """Return any extra text to add to refpage headers."""
         return 'include::{config}/attribs.txt[]\n' + \
             'include::{config}/opencl.asciidoc[]\n' + \
-            'include::{apispec}/footnotes.asciidoc[]\n' + \
-            'include::{cspec}/footnotes.asciidoc[]\n' + \
+            'include::{config}/version-full-links.asciidoc[]\n' + \
+            'include::{generated}/api/api-dictionary-no-links.asciidoc[]\n' + \
             'include::{cspec}/feature-dictionary.asciidoc[]\n' + \
-            'include::{generated}/api/api-dictionary-no-links.asciidoc[]'
+            'include::{apispec}/footnotes.asciidoc[]\n' + \
+            'include::{cspec}/footnotes.asciidoc[]\n'
 
     @property
     def extension_index_prefixes(self):
