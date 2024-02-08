@@ -7597,6 +7597,9 @@ server's OpenCL/api-docs repository.
             <require group="cl_error_code">
                 <enum name="CL_CANCELLED_IMG"/>
             </require>
+            <require>
+                <command name="clCancelCommandsIMG"/>
+            </require>
         </extension>
     </extensions>
 </registry>
