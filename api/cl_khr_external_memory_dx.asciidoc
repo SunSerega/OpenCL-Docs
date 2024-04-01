@@ -55,18 +55,6 @@ TODO
 
 // The 'New ...' section can be auto-generated
 
-=== New Commands
-
-  None
-
-=== New Structures
-
-  * None
-
-=== New Types
-
-  * None
-
 === New Enums
 
   * {cl_external_memory_handle_type_khr_TYPE}
@@ -74,10 +62,6 @@ TODO
   ** {CL_EXTERNAL_MEMORY_HANDLE_D3D11_TEXTURE_KMT_KHR}
   ** {CL_EXTERNAL_MEMORY_HANDLE_D3D12_HEAP_KHR}
   ** {CL_EXTERNAL_MEMORY_HANDLE_D3D12_RESOURCE_KHR}
-
-=== Issues
-
-include::provisional_notice.asciidoc[]
 
 === Version History
 

@@ -66,10 +66,6 @@ TODO
   * {clEnqueueAcquireExternalMemObjectsKHR}
   * {clEnqueueReleaseExternalMemObjectsKHR}
 
-=== New Structures
-
-  * None
-
 === New Types
 
   * {cl_external_memory_handle_type_khr_TYPE}
@@ -297,8 +293,6 @@ while (true) {
 --
 *UNRESOLVED*
 --
-
-include::provisional_notice.asciidoc[]
 
 === Version History
 
