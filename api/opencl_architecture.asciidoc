@@ -998,9 +998,9 @@ concepts such as _resources_, _reference counts_, and _devices_.
 
 Sharing is accomplished by creating an OpenCL context via the context create
 parameters {CL_CONTEXT_D3D10_DEVICE_KHR} (for Direct3D 10, if the
-`<<cl_khr_d3d10_sharing>>` extension is supported) or
+{cl_khr_d3d10_sharing_EXT} extension is supported) or
 {CL_CONTEXT_D3D11_DEVICE_KHR} (for Direct3D 11, if the
-`<<cl_khr_d3d11_sharing>>` extension is supported.
+{cl_khr_d3d11_sharing_EXT} extension is supported.
 
 An OpenCL memory object created from a Direct3D resource remains valid as
 long as the corresponding Direct3D resource has not been deleted.
@@ -1869,7 +1869,7 @@ function instance.
 ==== Sub-Group Functions
 
 NOTE: Sub-group functions are <<unified-spec, missing before>> version 2.1.
-Also see `<<cl_khr_subgroups>>`.
+Also see {cl_khr_subgroups_EXT}.
 
 The OpenCL kernel execution model includes collective operations across the
 work-items within a single sub-group.
@@ -2220,19 +2220,19 @@ This enables versions to be ordered using standard C/C++ operators.
 A number of convenience macros are provided by the OpenCL Headers to make
 working with version numbers easier.
 
-  * `CL_VERSION_MAJOR` extracts the _major_ version from a packed
+  * {CL_VERSION_MAJOR_anchor} extracts the _major_ version from a packed
     {cl_version_TYPE}.
-  * `CL_VERSION_MINOR` extracts the _minor_ version from a packed
+  * {CL_VERSION_MINOR_anchor} extracts the _minor_ version from a packed
     {cl_version_TYPE}.
-  * `CL_VERSION_PATCH` extracts the _patch_ version from a packed
+  * {CL_VERSION_PATCH_anchor} extracts the _patch_ version from a packed
     {cl_version_TYPE}.
-  * `CL_MAKE_VERSION` returns a packed {cl_version_TYPE} from a
+  * {CL_MAKE_VERSION_anchor} returns a packed {cl_version_TYPE} from a
     _major_, _minor_ and _patch_ version.
   * {CL_VERSION_MAJOR_BITS_anchor}, {CL_VERSION_MINOR_BITS_anchor}, and
     {CL_VERSION_PATCH_BITS_anchor} are the number of bits in the
     corresponding field.
-  * `CL_VERSION_MAJOR_MASK`, `CL_VERSION_MINOR_MASK`, and
-    `CL_VERSION_PATCH_MASK` are bitmasks used to extract the
+  * {CL_VERSION_MAJOR_MASK_anchor}, {CL_VERSION_MINOR_MASK_anchor}, and
+    {CL_VERSION_PATCH_MASK_anchor} are bitmasks used to extract the
     corresponding packed fields from the version number.
 
 [source,opencl]

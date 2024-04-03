@@ -35,7 +35,7 @@ include::{generated}/meta/{refprefix}cl_khr_external_memory.txt[]
 
 === Description
 
-`cl_khr_external_memory` defines a generic mechanism to share buffer and
+{cl_khr_external_memory_EXT} defines a generic mechanism to share buffer and
 image objects between OpenCL and many other APIs, including:
 
   * Optional properties to import external memory exported by other APIs
@@ -81,7 +81,7 @@ TODO
   ** {CL_MEM_DEVICE_HANDLE_LIST_KHR}
   ** {CL_MEM_DEVICE_HANDLE_LIST_END_KHR}
   * Return values from from {clGetEventInfo} when _param_name_ is
-    {CL_EVENT_COMMAND_TYPE}:
+    {cl_command_type_TYPE}:
   ** {CL_COMMAND_ACQUIRE_EXTERNAL_MEM_OBJECTS_KHR}
   ** {CL_COMMAND_RELEASE_EXTERNAL_MEM_OBJECTS_KHR}
 
@@ -90,7 +90,7 @@ TODO
 
 ==== Example for Creating a CL Buffer From an Exported External Buffer in a Single Device Context
 
-This example also requires use of the `<<cl_khr_external_memory_opaque_fd>>`
+This example also requires use of the {cl_khr_external_memory_opaque_fd_EXT}
 extension.
 
 [source]
@@ -124,7 +124,7 @@ cl_mem extMemBuffer = clCreateBufferWithProperties(/*context*/          clContex
 
 ==== Example for Creating a CL Image From an Exported External Image for Single Device Usage in a Multi-Device Context
 
-This example also requires use of the `<<cl_khr_external_memory_opaque_fd>>`
+This example also requires use of the {cl_khr_external_memory_opaque_fd_EXT}
 extension.
 
 [source]
