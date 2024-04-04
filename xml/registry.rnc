@@ -251,6 +251,18 @@ Enums = element enums {
 #   comment - descriptive text with no semantic meaning
 #   deprecated - denotes that this enum is deprecated, and why.
 #       Valid values: 'aliased', 'ignored', 'true'.
+#   info_type - the type of value returned by a function,
+#       which accepts this enum, using the only "void*" parameter.
+#       (info_type is only valid when <require> tag has etype="obj info")
+#   input_type - the type of value expected by a function,
+#       which accepts this enum, using the only "const void*" parameter.
+#       (input_type is only valid when <require> tag has etype="obj info")
+#   followed - the type to follow this enum in a property list.
+#       (followed is only valid when <require> tag has etype="property info")
+#   terminate - the name of another enum with followed attribute in the same enum group.
+#       When this attribute is present, the enum with followed attribute denotes a list,
+#       while the enum with terminate attribute denotes terminator of that list. (not always a NULL-terminator)
+#       (terminate is only valid when <require> tag has etype="property info")
 Enum = element enum {
     (
       (
@@ -425,7 +437,7 @@ Command = element command {
 #   <require> / <remove> contains features to require or remove in
 #                        this version
 #     profile - only require/remove when generated profile matches
-#     etype - can be "enum", "bitfield", "constants" or "OpenCL-C only"
+#     etype - can be "enum", "bitfield", "obj info", "property list", "constants" or "OpenCL-C only"
 #               If omited, etype="enum" is assumed
 #     group - type name, dedicated to a select group of enums
 #               Only exists for "enum" and "bitfield" etype's
@@ -506,7 +518,7 @@ Extensions = element extensions {
 # In addition, <require> / <remove> tags also support attributes:
 #     api - only require/remove these features for the matching API.
 #       Not a regular expression.
-#     etype - can be "enum", "bitfield", "constants" or "OpenCL-C only"
+#     etype - can be "enum", "bitfield", "obj info", "property list", "constants" or "OpenCL-C only"
 #               If omited, etype="enum" is assumed
 #     group - type name, dedicated to a select group of enums
 #               Only exists for "enum" and "bitfield" etype's
