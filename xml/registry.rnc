@@ -278,6 +278,14 @@ Enum = element enum {
       attribute type { TypeSuffix } ? &
       attribute name { text } &
       attribute deprecated { text } ? &
+      (
+        (
+          attribute input_type { TypeName } ? &
+          attribute info_type { TypeName } ?
+        ) |
+        attribute followed { TypeName } |
+        attribute terminate { EnumName }
+      ) ? &
       Comment ?
     )
 }
