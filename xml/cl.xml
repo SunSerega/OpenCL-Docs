@@ -4458,18 +4458,6 @@ server's OpenCL/api-docs repository.
             <type name="cl_error_code"/>
             <type name="cl_command_execution_status"/>
         </require>
-        <require comment="API data types">
-            <type name="cl_char"/>
-            <type name="cl_uchar"/>
-            <type name="cl_short"/>
-            <type name="cl_ushort"/>
-            <type name="cl_int"/>
-            <type name="cl_uint"/>
-            <type name="cl_long"/>
-            <type name="cl_ulong"/>
-            <type name="cl_float"/>
-            <type name="cl_half"/>
-        </require>
         <require etype="constants">
             <enum name="CL_CHAR_BIT"/>
             <enum name="CL_CHAR_MAX"/>
@@ -4511,32 +4499,6 @@ server's OpenCL/api-docs repository.
             <enum name="CL_HUGE_VAL"/>
             <enum name="CL_MAXFLOAT"/>
             <enum name="CL_INFINITY"/>
-            <enum name="CL_M_E"/>
-            <enum name="CL_M_LOG2E"/>
-            <enum name="CL_M_LOG10E"/>
-            <enum name="CL_M_LN2"/>
-            <enum name="CL_M_LN10"/>
-            <enum name="CL_M_PI"/>
-            <enum name="CL_M_PI_2"/>
-            <enum name="CL_M_PI_4"/>
-            <enum name="CL_M_1_PI"/>
-            <enum name="CL_M_2_PI"/>
-            <enum name="CL_M_2_SQRTPI"/>
-            <enum name="CL_M_SQRT2"/>
-            <enum name="CL_M_SQRT1_2"/>
-            <enum name="CL_M_E_F"/>
-            <enum name="CL_M_LOG2E_F"/>
-            <enum name="CL_M_LOG10E_F"/>
-            <enum name="CL_M_LN2_F"/>
-            <enum name="CL_M_LN10_F"/>
-            <enum name="CL_M_PI_F"/>
-            <enum name="CL_M_PI_2_F"/>
-            <enum name="CL_M_PI_4_F"/>
-            <enum name="CL_M_1_PI_F"/>
-            <enum name="CL_M_2_PI_F"/>
-            <enum name="CL_M_2_SQRTPI_F"/>
-            <enum name="CL_M_SQRT2_F"/>
-            <enum name="CL_M_SQRT1_2_F"/>
         </require>
         <require group="cl_error_code">
             <enum name="CL_SUCCESS"/>
@@ -5071,7 +5033,6 @@ server's OpenCL/api-docs repository.
             <type name="cl_kernel_arg_access_qualifier"/>
             <type name="cl_kernel_arg_type_qualifier"/>
             <type name="cl_image_desc"/>
-            <type name="cl_double"/>
         </require>
         <require etype="constants">
             <enum name="CL_DBL_DIG"/>
@@ -5252,7 +5213,6 @@ server's OpenCL/api-docs repository.
         <require>
             <type name="cl_device_svm_capabilities"/>
             <type name="cl_queue_properties"/>
-            <type name="cl_properties"/>
             <type name="cl_svm_mem_flags"/>
             <type name="cl_pipe_properties"/>
             <type name="cl_pipe_info"/>
@@ -5716,7 +5676,6 @@ server's OpenCL/api-docs repository.
         <extension name="cl_khr_fp64" supported="opencl" promotedto="CL_VERSION_1_2" ratified="opencl">
             <require>
                 <type name="CL/cl.h"/>
-                <type name="cl_double"/>
             </require>
             <require group="cl_device_info" etype="obj info" condition="!defined(CL_VERSION_1_2)">
                 <enum name="CL_DEVICE_DOUBLE_FP_CONFIG" info_type="cl_device_fp_config"/>
@@ -5728,18 +5687,6 @@ server's OpenCL/api-docs repository.
             </require>
             <require group="cl_device_info" etype="obj info">
                 <enum name="CL_DEVICE_HALF_FP_CONFIG" info_type="cl_device_fp_config"/>
-            </require>
-            <require etype="constants">
-                <enum name="CL_HALF_DIG"/>
-                <enum name="CL_HALF_MANT_DIG"/>
-                <enum name="CL_HALF_MAX_10_EXP"/>
-                <enum name="CL_HALF_MAX_EXP"/>
-                <enum name="CL_HALF_MIN_10_EXP"/>
-                <enum name="CL_HALF_MIN_EXP"/>
-                <enum name="CL_HALF_RADIX"/>
-                <enum name="CL_HALF_MAX"/>
-                <enum name="CL_HALF_MIN"/>
-                <enum name="CL_HALF_EPSILON"/>
             </require>
         </extension>
         <extension name="cl_APPLE_SetMemObjectDestructor" comment="not registered" supported="opencl">
@@ -5763,7 +5710,6 @@ server's OpenCL/api-docs repository.
         <extension name="cl_khr_icd" supported="opencl" ratified="opencl">
             <require>
                 <type name="CL/cl.h"/>
-                <type name="cl_icd_dispatch"/>
             </require>
             <require group="cl_platform_info" etype="obj info">
                 <enum name="CL_PLATFORM_ICD_SUFFIX_KHR" info_type="char[]"/>
@@ -6727,9 +6673,6 @@ server's OpenCL/api-docs repository.
         <extension name="cl_khr_gl_depth_images" depends="cl_khr_gl_sharing" comment="no API - reuses tokens from core API" supported="opencl" ratified="opencl">
             <require>
                 <type name="CL/cl.h"/>
-                <type name="cl_GLint"/>
-                <type name="cl_GLenum"/>
-                <type name="cl_GLuint"/>
             </require>
             <require group="cl_channel_order">
                 <enum name="CL_DEPTH_STENCIL"/>
