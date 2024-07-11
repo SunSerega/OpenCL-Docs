@@ -2524,14 +2524,14 @@ The memory layout of this image format is described below:
 
 [width="60%",cols="<10%,<10%,<10%,<10%,<60%"]
 |====
-| R | G | B | A | ... |
+| R | G | B | A | ...
 |====
 
 with the corresponding byte offsets
 
 [width="60%",cols="<10%,<10%,<10%,<10%,<60%"]
 |====
-| 0 | 1 | 2 | 3 | ... |
+| 0 | 1 | 2 | 3 | ...
 |====
 
 Similar, if `image_channel_order` = {CL_RGBA} and `image_channel_data_type` =
@@ -2539,14 +2539,14 @@ Similar, if `image_channel_order` = {CL_RGBA} and `image_channel_data_type` =
 
 [width="60%",cols="<10%,<10%,<10%,<10%,<60%"]
 |====
-| R | G | B | A | ... |
+| R | G | B | A | ...
 |====
 
 with the corresponding byte offsets
 
 [width="60%",cols="<10%,<10%,<10%,<10%,<60%"]
 |====
-| 0 | 2 | 4 | 6 | ... |
+| 0 | 2 | 4 | 6 | ...
 |====
 
 `image_channel_data_type` values of {CL_UNORM_SHORT_565}, {CL_UNORM_SHORT_555},
@@ -13032,7 +13032,7 @@ a successful import.
 ifdef::cl_khr_external_semaphore_sync_fd[]
 [open,refpage='clReImportSemaphoreSyncFdKHR',desc='Re-import sync fd handle into an existing semaphore',type='protos']
 --
-To re-imported a handle of type {CL_SEMAPHORE_HANDLE_SYNC_FD_KHR} into an
+To re-import a handle of type {CL_SEMAPHORE_HANDLE_SYNC_FD_KHR} into an
 existing semaphore, call the function:
 
 include::{generated}/api/protos/clReImportSemaphoreSyncFdKHR.txt[]
@@ -13051,7 +13051,7 @@ of type {CL_SEMAPHORE_HANDLE_SYNC_FD_KHR}.
 
 // refError
 
-{clGetSemaphoreHandleForTypeKHR} returns {CL_SUCCESS} if the semaphore
+{clReImportSemaphoreSyncFdKHR} returns {CL_SUCCESS} if the semaphore
 handle is re-imported successfully.
 Otherwise, it returns one of the following errors:
 
@@ -13113,6 +13113,7 @@ include::{generated}/api/version-notes/CL_SEMAPHORE_HANDLE_OPAQUE_WIN32_KHR.asci
 include::{generated}/api/version-notes/CL_SEMAPHORE_HANDLE_OPAQUE_WIN32_KMT_KHR.asciidoc[]
   | Reference
 endif::cl_khr_external_semaphore_win32[]
+|====
 
 // TODO Why "Windows handles" here but "NT handles" elsewhere?
 
