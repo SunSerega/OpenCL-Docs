@@ -628,8 +628,9 @@ returned in _errcode_ret_:
     in the <<memory-flags-table,Memory Flags>> table.
   * {CL_INVALID_BUFFER_SIZE} if _size_ is 0, or if _size_ is greater than
     {CL_DEVICE_MAX_MEM_ALLOC_SIZE} for all devices in _context_, or if
-    {CL_MEM_USE_HOST_PTR} is set in _flags_ and _host_ptr_ is a pointer returned by
-    {clSVMAlloc} and _size_ is greater than the size passed to {clSVMAlloc}.
+    {CL_MEM_USE_HOST_PTR} or {CL_MEM_COPY_HOST_PTR} is set in _flags_ and
+    _host_ptr_ is a pointer returned by {clSVMAlloc} and _size_ is greater than
+    the size passed to {clSVMAlloc}.
   * {CL_INVALID_HOST_PTR} if _host_ptr_ is `NULL` and {CL_MEM_USE_HOST_PTR} or
     {CL_MEM_COPY_HOST_PTR} are set in _flags_ or if _host_ptr_ is not `NULL`
     but {CL_MEM_COPY_HOST_PTR} or {CL_MEM_USE_HOST_PTR} are not set in _flags_.
@@ -1836,7 +1837,7 @@ include::{generated}/api/version-notes/clCreateFromGLBuffer.asciidoc[]
     Only the {CL_MEM_READ_ONLY}, {CL_MEM_WRITE_ONLY} and {CL_MEM_READ_WRITE}
     flags specified in that table can be used.
   * _bufobj_ is the name of an OpenGL buffer object.
-    The data store of the OpenGL buffer object must have have been
+    The data store of the OpenGL buffer object must have been
     previously created by calling `glBufferData`, although its contents need
     not be initialized.
     The size of the data store will be used to determine the size of the
@@ -2645,7 +2646,7 @@ ifdef::cl_khr_external_memory[]
     If _image_slice_pitch_ is zero and the image is created from an external
     memory handle, then the image slice pitch is implementation-defined.
 endif::cl_khr_external_memory[]
-    The image slice pitch must be {geq} the image image row pitch {times}
+    The image slice pitch must be {geq} the image row pitch {times}
     _image_height_ for a 2D image array or a 3D image, must be {geq} the
     image row pitch for a 1D image array, and must be a multiple of the
     image row pitch.
@@ -5467,9 +5468,9 @@ Otherwise, it returns one of the following errors:
   ** if _command_queue_ is not a valid command-queue, or
   ** if device associated with _command_queue_ is not one of the devices
      specified by {CL_MEM_DEVICE_HANDLE_LIST_KHR} at the time of creating
-     one or more of _mem_objects_, or ** if one or more of _mem_objects_
-     belong to a context that does not contain a device associated with
-     _command_queue_.
+     one or more of _mem_objects_, or
+  ** if one or more of _mem_objects_ belong to a context that does not
+     contain a device associated with _command_queue_.
   * {CL_INVALID_EVENT_WAIT_LIST}
   ** if _event_wait_list_ is `NULL` and _num_events_in_wait_list_ is not 0,
      or
@@ -7087,7 +7088,7 @@ include::{generated}/api/version-notes/clEnqueueReleaseGLObjects.asciidoc[]
     to an element of the _event_wait_list_ array.
 
 ifdef::cl_khr_gl_event[]
-If an OpenGL context is bound to the current thread, then then any OpenGL
+If an OpenGL context is bound to the current thread, then any OpenGL
 commands which
 
   . affect or access the contents of the memory objects listed in the
@@ -8426,6 +8427,10 @@ header or implementation-defined source for custom devices that support an
 online compiler.
 OpenCL {cpp} is not supported as an online-compiled kernel language through
 this interface.
+ifdef::cl_ext_cxx_for_opencl[]
+If the {cl_ext_cxx_for_opencl_EXT} extension is supported, the source code
+specified by _strings_ may also be a C++ for OpenCL program source or header.
+endif::cl_ext_cxx_for_opencl[]
 
 // refError
 
@@ -9518,6 +9523,13 @@ IMPORTANT: Debugging options are <<unified-spec, missing before>> version 2.0.
     built-in functions that allow you to enqueue commands on a device (refer
     to OpenCL kernel languages specifications).
 
+ifdef::cl_ext_cxx_for_opencl[]
+==== C++ for OpenCL
+
+Applications may pass `-cl-std=CLC\++` to {clCompileProgram} or {clBuildProgram}
+for programs created using {clCreateProgramFromSource} to request the program
+be built as C++ for OpenCL.
+endif::cl_ext_cxx_for_opencl[]
 
 [[linker-options]]
 === Linker Options
@@ -12852,7 +12864,7 @@ _errcode_ret_ returns an appropriate error code.
 If _errcode_ret_ is `NULL`, no error code is returned.
 
 {clCreateSemaphoreWithPropertiesKHR} returns a valid semaphore object in an
-un-signaled state and and _errcode_ret_ is set to {CL_SUCCESS} if the
+un-signaled state and _errcode_ret_ is set to {CL_SUCCESS} if the
 function is executed successfully.
 Otherwise, it returns a `NULL` value with one of the following error values
 returned in _errcode_ret_:
@@ -12918,7 +12930,7 @@ include::{generated}/api/protos/clGetSemaphoreHandleForTypeKHR.txt[]
   * _handle_size_ specifies the size of memory pointed by _handle_ptr_.
   * _handle_ptr_ is a pointer to memory where the exported external handle
     is returned.
-    If _param_value_ is `NULL`, it is ignored.
+    If _handle_ptr_ is `NULL`, it is ignored.
   * _handle_size_ret_ returns the actual size in bytes for the external
     handle.
     If _handle_size_ret_ is `NULL`, it is ignored.
@@ -13073,7 +13085,10 @@ include::{generated}/api/protos/clReImportSemaphoreSyncFdKHR.txt[]
 
   * _sema_object_ specifies a valid semaphore object with importable
     properties.
-  * _reimport_props_ must be `NULL`, and is reserved for future use.
+  * _reimport_props_ is an optional list of properties that affect the
+   re-import behavior. The list is terminated with the special property `0`.
+   If no properties are required, _reimport_props_ may be `NULL`. This extension
+   does not define any optional properties.
   * _fd_ specifies an external file descriptor handle to import
 
 Calling {clReImportSemaphoreSyncFdKHR} is equivalent to destroying
