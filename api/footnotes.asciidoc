@@ -1,6 +1,5 @@
-// Copyright 2017-2024 The Khronos Group. This work is licensed under a
-// Creative Commons Attribution 4.0 International License; see
-// http://creativecommons.org/licenses/by/4.0/
+// Copyright 2017-2024 The Khronos Group Inc.
+// SPDX-License-Identifier: CC-BY-4.0
 
 // Please keep footnotes in alphabetical order!
 
@@ -11,12 +10,8 @@
 Note that this flag does not provide meaning for atomic memory operations, but only for atomic fence operations in certain circumstances, refer to the Memory Scope section of the OpenCL C specification. \
 ]
 
-:fn-compatible-image-channel-orders: pass:n[ \
-This allows creation of a sRGB view of the image from a linear RGB view or vice-versa, i.e. the pixels stored in the image can be accessed as linear RGB or sRGB values. \
-]
-
 :fn-create-context-all-or-subset: pass:n[ \
-{clCreateContextfromType} may may create a context for all or a subset of the actual physical devices present in the platform that match _device_type_. \
+{clCreateContextfromType} may create a context for all or a subset of the actual physical devices present in the platform that match _device_type_. \
 ]
 
 :fn-default-device-queue: pass:n[ \
@@ -73,19 +68,6 @@ This value for memory_scope can only be used with atomic_work_item_fence with fl
 Note that the performance of 64-bit integer arithmetic can vary significantly between embedded devices. \
 ]
 
-:fn-kernel-arg-type-const-addr-space: pass:n[ \
-{CL_KERNEL_ARG_TYPE_CONST} is returned for {CL_KERNEL_ARG_TYPE_QUALIFIER} if the argument is declared with the `constant` address space qualifier. \
-]
-
-:fn-kernel-arg-type-qualifier: pass:n[ \
-{CL_KERNEL_ARG_TYPE_CONST} is returned if the argument is a pointer and the referenced type is declared with the const qualifier. \
-For example, a kernel argument declared as `global int const *x` returns {CL_KERNEL_ARG_TYPE_CONST} but a kernel argument declared as `global int * const x` does not. + \
-Similarly, {CL_KERNEL_ARG_TYPE_RESTRICT} will be returned if the pointer type is marked `restrict`. \
-For example, `global int * restrict x` returns {CL_KERNEL_ARG_TYPE_RESTRICT}. + \
-{CL_KERNEL_ARG_TYPE_VOLATILE} is returned for {CL_KERNEL_ARG_TYPE_QUALIFIER} if the argument is a pointer and the referenced type is declared with the volatile qualifier. \
-For example, a kernel argument declared as `global int volatile *x` returns {CL_KERNEL_ARG_TYPE_VOLATILE} but a kernel argument declared as `global int * volatile x` does not. \
-]
-
 :fn-map-count-usage: pass:n[ \
 The map count returned should be considered immediately stale. \
 It is unsuitable for general use in applications. \
@@ -125,7 +107,7 @@ Rather than attempt to share {cl_kernel_TYPE} objects among multiple host thread
 ]
 
 :fn-readimageh: pass:n[ \
-And *read_imageh*, if the *cl_khr_fp16* extension is supported. \
+And *read_imageh*, if the {cl_khr_fp16_EXT} extension is supported. \
 ]
 
 :fn-reference-count-usage: pass:n[ \
