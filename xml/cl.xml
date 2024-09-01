@@ -5717,7 +5717,7 @@ server's OpenCL/api-docs repository.
             <require group="cl_device_info" etype="obj info">
                 <enum name="CL_DEVICE_HALF_FP_CONFIG" info_type="cl_device_fp_config"/>
             </require>
-            <require comment="Constants">
+            <require etype="constants">
                 <enum name="CL_HALF_DIG"/>
                 <enum name="CL_HALF_MANT_DIG"/>
                 <enum name="CL_HALF_MAX_10_EXP"/>
