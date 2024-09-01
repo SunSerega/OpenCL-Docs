@@ -1,10 +1,9 @@
-// Copyright (c) 2014-2021 Khronos Group. This work is licensed under a
-// Creative Commons Attribution 4.0 International License; see
-// http://creativecommons.org/licenses/by/4.0/
+// Copyright 2014-2024 The Khronos Group Inc.
+// SPDX-License-Identifier: CC-BY-4.0
 
 :data-uri:
 :icons: font
-include::../config/attribs.txt[]
+include::{config}/attribs.txt[]
 
 = clGetExtensionFunctionAddressForPlatform(3)
 
@@ -33,8 +32,8 @@ The pointer returned should be cast to a function pointer type matching the exte
 
 A return value of NULL indicates that the specified function does not exist for the implementation or _platform_ is not a valid platform.
 A non-NULL return value for `clGetExtensionFunctionAddressForPlatform` does not guarantee that an extension function is actually supported by the platform.
-The application must also make a corresponding query using flink:clGetPlatformInfo (platform, `CL_PLATFORM_EXTENSIONS`, ... ) or
-flink:clGetDeviceInfo (device,`CL_DEVICE_EXTENSIONS`, ... ) to determine if an extension is supported by the OpenCL implementation.
+The application must also make a corresponding query using flink:clGetPlatformInfo (platform, {CL_PLATFORM_EXTENSIONS}, ... ) or
+flink:clGetDeviceInfo (device,{CL_DEVICE_EXTENSIONS}, ... ) to determine if an extension is supported by the OpenCL implementation.
 
 `clGetExtensionFunctionAddressForPlatform` may not be queried for core (non-extension) functions in OpenCL.
 For functions that are queryable with `clGetExtensionFunctionAddressForPlatform`, implementations may choose to also export those functions statically from the object libraries implementing those functions.
@@ -112,6 +111,8 @@ reflink:EXTENSION
 
 For more information, see the OpenCL Extension Specification at URL
 
-https://www.khronos.org/registry/OpenCL/specs/2.2/html/OpenCL_Ext.html#clGetExtensionFunctionAddressForPlatform
+https://www.khronos.org/registry/OpenCL/specs/3.0-unified/html/OpenCL_Ext.html#clGetExtensionFunctionAddressForPlatform
+
+== Copyright
 
 include::footer.txt[]

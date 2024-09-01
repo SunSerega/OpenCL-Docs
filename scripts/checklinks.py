@@ -1,18 +1,7 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 #
-# Copyright (c) 2013-2021 The Khronos Group Inc.
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
+# Copyright 2013-2024 The Khronos Group Inc.
+# SPDX-License-Identifier: Apache-2.0
 
 import argparse
 import os
@@ -39,9 +28,9 @@ if __name__ == "__main__":
         sourcefile.close()
 
         # We're not going to check API links.
-        #filelinks = re.findall(r"{((cl\w+)|(CL\w+))}", sourcetext)
-        filelinks = re.findall(r"{((CL\w+))}", sourcetext)
-        fileanchors = re.findall(r"{((cl\w+)|(CL\w+))_anchor}", sourcetext)
+        #filelinks = re.findall(r"{((cl\w+)|(CL_\w+))}", sourcetext)
+        filelinks = re.findall(r"{((CL_\w+))}", sourcetext)
+        fileanchors = re.findall(r"{((cl\w+)|(CL_\w+))_anchor}", sourcetext)
 
         filelinks = [re.sub(r"_anchor\b", "", link[0]) for link in filelinks]
         fileanchors = [anchor[0] for anchor in fileanchors]
