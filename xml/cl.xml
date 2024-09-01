@@ -4299,7 +4299,7 @@ server's OpenCL/api-docs repository.
             <param>const <type>cl_icd_dispatch</type>**                 <name>layer_dispatch_ret</name></param>
         </command>
         <command>
-            <proto><type>cl_int</type>                                  <name>clDeinitLayer</name></proto>
+            <proto><type>cl_error_code</type>                           <name>clDeinitLayer</name></proto>
         </command>
         <command>
             <proto><type>cl_error_code</type>                           <name>clGetICDLoaderInfoOCLICD</name></proto>
