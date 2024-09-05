@@ -2663,7 +2663,7 @@ server's OpenCL/api-docs repository.
             <param><type>cl_error_code</type>*             <name>errcode_ret</name></param>
         </command>
         <command>
-            <proto><type>cl_int</type>                     <name>clIcdDestroyInstancePlatformKHR</name></proto>
+            <proto><type>cl_error_code</type>              <name>clIcdDestroyInstancePlatformKHR</name></proto>
             <param><type>cl_platform_id</type>             <name>platform</name></param>
         </command>
         <command>
@@ -5763,7 +5763,7 @@ server's OpenCL/api-docs repository.
             </require>
             <require group="cl_platform_info" etype="obj info">
                 <enum name="CL_PLATFORM_ICD_SUFFIX_KHR" info_type="char[]"/>
-                <enum name="CL_PLATFORM_UNLOADABLE_KHR"/>
+                <enum name="CL_PLATFORM_UNLOADABLE_KHR" info_type="cl_bool"/>
             </require>
             <require group="cl_instance_properties_khr" etype="property list">
                 <enum name="CL_INSTANCE_PROPERTIES_LIST_END_KHR" terminate=""/>
