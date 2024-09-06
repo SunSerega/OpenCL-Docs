@@ -247,7 +247,7 @@ server's OpenCL/api-docs repository.
         <type category="define">typedef <type>cl_uint</type>          <name>cl_command_buffer_state_khr</name>;</type>
         <type category="define">typedef <type>cl_properties</type>    <name>cl_command_buffer_properties_khr</name>;</type>
         <type category="define">typedef <type>cl_bitfield</type>      <name>cl_command_buffer_flags_khr</name>;</type>
-        <type category="define">typedef <type>cl_properties</type>    <name>cl_ndrange_kernel_command_properties_khr</name>;</type>
+        <type category="define">typedef <type>cl_properties</type>    <name>cl_command_properties_khr</name>;</type>
         <type category="define">typedef struct _cl_mutable_command_khr* <name>cl_mutable_command_khr</name>;</type>
         <type category="define">typedef <type>cl_bitfield</type>       <name>cl_mutable_dispatch_fields_khr</name>;</type>
         <type category="define">typedef <type>cl_uint</type>          <name>cl_mutable_command_info_khr</name>;</type>
@@ -1853,7 +1853,7 @@ server's OpenCL/api-docs repository.
             <unused start="0x129A" end="0x129F" comment="Available to use"/>
         <enum value="0x12A0"             name="CL_MUTABLE_COMMAND_COMMAND_QUEUE_KHR"/>
         <enum value="0x12A1"             name="CL_MUTABLE_COMMAND_COMMAND_BUFFER_KHR"/>
-        <enum value="0x12A2"             name="CL_MUTABLE_DISPATCH_PROPERTIES_ARRAY_KHR"/>
+        <enum value="0x12A2"             name="CL_MUTABLE_COMMAND_PROPERTIES_ARRAY_KHR"/>
         <enum value="0x12A3"             name="CL_MUTABLE_DISPATCH_KERNEL_KHR"/>
         <enum value="0x12A4"             name="CL_MUTABLE_DISPATCH_DIMENSIONS_KHR"/>
         <enum value="0x12A5"             name="CL_MUTABLE_DISPATCH_GLOBAL_WORK_OFFSET_KHR"/>
@@ -3188,6 +3188,7 @@ server's OpenCL/api-docs repository.
             <proto><type>cl_error_code</type>             <name>clCommandBarrierWithWaitListKHR</name></proto>
             <param><type>cl_command_buffer_khr</type>     <name>command_buffer</name></param>
             <param><type>cl_command_queue</type>          <name>command_queue</name></param>
+            <param>const <type>cl_command_properties_khr</type>*           <name>properties</name></param>
             <param><type>cl_uint</type>                   <name>num_sync_points_in_wait_list</name></param>
             <param>const <type>cl_sync_point_khr</type>*  <name>sync_point_wait_list</name></param>
             <param><type>cl_sync_point_khr</type>*        <name>sync_point</name></param>
@@ -3197,6 +3198,7 @@ server's OpenCL/api-docs repository.
             <proto><type>cl_error_code</type>             <name>clCommandCopyBufferKHR</name></proto>
             <param><type>cl_command_buffer_khr</type>     <name>command_buffer</name></param>
             <param><type>cl_command_queue</type>          <name>command_queue</name></param>
+            <param>const <type>cl_command_properties_khr</type>*           <name>properties</name></param>
             <param><type>cl_mem</type>                    <name>src_buffer</name></param>
             <param><type>cl_mem</type>                    <name>dst_buffer</name></param>
             <param><type>size_t</type>                    <name>src_offset</name></param>
@@ -3211,6 +3213,7 @@ server's OpenCL/api-docs repository.
             <proto><type>cl_error_code</type>             <name>clCommandCopyBufferRectKHR</name></proto>
             <param><type>cl_command_buffer_khr</type>     <name>command_buffer</name></param>
             <param><type>cl_command_queue</type>          <name>command_queue</name></param>
+            <param>const <type>cl_command_properties_khr</type>*           <name>properties</name></param>
             <param><type>cl_mem</type>                    <name>src_buffer</name></param>
             <param><type>cl_mem</type>                    <name>dst_buffer</name></param>
             <param>const <type>size_t</type>*             <name>src_origin</name></param>
@@ -3229,6 +3232,7 @@ server's OpenCL/api-docs repository.
             <proto><type>cl_error_code</type>             <name>clCommandCopyBufferToImageKHR</name></proto>
             <param><type>cl_command_buffer_khr</type>     <name>command_buffer</name></param>
             <param><type>cl_command_queue</type>          <name>command_queue</name></param>
+            <param>const <type>cl_command_properties_khr</type>*           <name>properties</name></param>
             <param><type>cl_mem</type>                    <name>src_buffer</name></param>
             <param><type>cl_mem</type>                    <name>dst_image</name></param>
             <param><type>size_t</type>                    <name>src_offset</name></param>
@@ -3243,6 +3247,7 @@ server's OpenCL/api-docs repository.
             <proto><type>cl_error_code</type>             <name>clCommandCopyImageKHR</name></proto>
             <param><type>cl_command_buffer_khr</type>     <name>command_buffer</name></param>
             <param><type>cl_command_queue</type>          <name>command_queue</name></param>
+            <param>const <type>cl_command_properties_khr</type>*           <name>properties</name></param>
             <param><type>cl_mem</type>                    <name>src_image</name></param>
             <param><type>cl_mem</type>                    <name>dst_image</name></param>
             <param>const <type>size_t</type>*             <name>src_origin</name></param>
@@ -3257,6 +3262,7 @@ server's OpenCL/api-docs repository.
             <proto><type>cl_error_code</type>             <name>clCommandCopyImageToBufferKHR</name></proto>
             <param><type>cl_command_buffer_khr</type>     <name>command_buffer</name></param>
             <param><type>cl_command_queue</type>          <name>command_queue</name></param>
+            <param>const <type>cl_command_properties_khr</type>*           <name>properties</name></param>
             <param><type>cl_mem</type>                    <name>src_image</name></param>
             <param><type>cl_mem</type>                    <name>dst_buffer</name></param>
             <param>const <type>size_t</type>*             <name>src_origin</name></param>
@@ -3271,6 +3277,7 @@ server's OpenCL/api-docs repository.
             <proto><type>cl_error_code</type>             <name>clCommandFillBufferKHR</name></proto>
             <param><type>cl_command_buffer_khr</type>     <name>command_buffer</name></param>
             <param><type>cl_command_queue</type>          <name>command_queue</name></param>
+            <param>const <type>cl_command_properties_khr</type>*           <name>properties</name></param>
             <param><type>cl_mem</type>                    <name>buffer</name></param>
             <param>const <type>void</type>*               <name>pattern</name></param>
             <param><type>size_t</type>                    <name>pattern_size</name></param>
@@ -3285,6 +3292,7 @@ server's OpenCL/api-docs repository.
             <proto><type>cl_error_code</type>             <name>clCommandFillImageKHR</name></proto>
             <param><type>cl_command_buffer_khr</type>     <name>command_buffer</name></param>
             <param><type>cl_command_queue</type>          <name>command_queue</name></param>
+            <param>const <type>cl_command_properties_khr</type>*           <name>properties</name></param>
             <param><type>cl_mem</type>                    <name>image</name></param>
             <param>const <type>void</type>*               <name>fill_color</name></param>
             <param>const <type>size_t</type>*             <name>origin</name></param>
@@ -3298,7 +3306,7 @@ server's OpenCL/api-docs repository.
             <proto><type>cl_error_code</type>                              <name>clCommandNDRangeKernelKHR</name></proto>
             <param><type>cl_command_buffer_khr</type>                      <name>command_buffer</name></param>
             <param><type>cl_command_queue</type>                           <name>command_queue</name></param>
-            <param>const <type>cl_ndrange_kernel_command_properties_khr</type>*  <name>properties</name></param>
+            <param>const <type>cl_command_properties_khr</type>*           <name>properties</name></param>
             <param><type>cl_kernel</type>                                  <name>kernel</name></param>
             <param><type>cl_uint</type>                                    <name>work_dim</name></param>
             <param>const <type>size_t</type>*                              <name>global_work_offset</name></param>
@@ -3313,6 +3321,7 @@ server's OpenCL/api-docs repository.
             <proto><type>cl_error_code</type>                              <name>clCommandSVMMemcpyKHR</name></proto>
             <param><type>cl_command_buffer_khr</type>                      <name>command_buffer</name></param>
             <param><type>cl_command_queue</type>                           <name>command_queue</name></param>
+            <param>const <type>cl_command_properties_khr</type>*           <name>properties</name></param>
             <param><type>void</type>*                                      <name>dst_ptr</name></param>
             <param>const <type>void</type>*                                <name>src_ptr</name></param>
             <param><type>size_t</type>                                     <name>size</name></param>
@@ -3325,6 +3334,7 @@ server's OpenCL/api-docs repository.
             <proto><type>cl_error_code</type>                              <name>clCommandSVMMemFillKHR</name></proto>
             <param><type>cl_command_buffer_khr</type>                      <name>command_buffer</name></param>
             <param><type>cl_command_queue</type>                           <name>command_queue</name></param>
+            <param>const <type>cl_command_properties_khr</type>*           <name>properties</name></param>
             <param><type>void</type>*                                      <name>svm_ptr</name></param>
             <param>const <type>void</type>*                                <name>pattern</name></param>
             <param><type>size_t</type>                                     <name>pattern_size</name></param>
@@ -7311,7 +7321,7 @@ server's OpenCL/api-docs repository.
                 <command name="clSetContentSizeBufferPoCL"/>
             </require>
         </extension>
-        <extension name="cl_khr_command_buffer" revision="0.9.4" supported="opencl" depends="CL_VERSION_1_2" ratified="opencl" provisional="true">
+        <extension name="cl_khr_command_buffer" revision="0.9.5" supported="opencl" depends="CL_VERSION_1_2" ratified="opencl" provisional="true">
             <require>
                 <type name="CL/cl.h"/>
             </require>
@@ -7323,7 +7333,7 @@ server's OpenCL/api-docs repository.
                 <type name="cl_command_buffer_state_khr"/>
                 <type name="cl_command_buffer_properties_khr"/>
                 <type name="cl_command_buffer_flags_khr"/>
-                <type name="cl_ndrange_kernel_command_properties_khr"/>
+                <type name="cl_command_properties_khr"/>
                 <type name="cl_mutable_command_khr"/>
             </require>
             <require group="cl_device_info" etype="obj info">
@@ -7458,7 +7468,7 @@ server's OpenCL/api-docs repository.
                 <enum name="CL_QUEUE_JOB_SLOT_ARM" followed="cl_uint"/>
             </require>
         </extension>
-        <extension name="cl_khr_command_buffer_mutable_dispatch" revision="0.9.2" supported="opencl" depends="cl_khr_command_buffer" ratified="opencl" provisional="true" comment="requires cl_khr_command_buffer 0.9.0 or later">
+        <extension name="cl_khr_command_buffer_mutable_dispatch" revision="0.9.3" supported="opencl" depends="cl_khr_command_buffer" ratified="opencl" provisional="true" comment="requires cl_khr_command_buffer 0.9.5 or later">
             <require>
                 <type name="CL/cl.h"/>
             </require>
@@ -7480,7 +7490,7 @@ server's OpenCL/api-docs repository.
             <require group="cl_device_info" etype="obj info">
                 <enum name="CL_DEVICE_MUTABLE_DISPATCH_CAPABILITIES_KHR" info_type="cl_mutable_dispatch_fields_khr"/>
             </require>
-            <require group="cl_ndrange_kernel_command_properties_khr" etype="property list">
+            <require group="cl_command_properties_khr" etype="property list">
                <enum name="CL_MUTABLE_DISPATCH_UPDATABLE_FIELDS_KHR" followed="cl_mutable_dispatch_fields_khr"/>
             </require>
             <require group="cl_mutable_dispatch_fields_khr" etype="bitfield">
@@ -7494,7 +7504,7 @@ server's OpenCL/api-docs repository.
                <enum name="CL_MUTABLE_COMMAND_COMMAND_QUEUE_KHR" info_type="cl_command_queue"/>
                <enum name="CL_MUTABLE_COMMAND_COMMAND_BUFFER_KHR" info_type="cl_command_buffer_khr"/>
                <enum name="CL_MUTABLE_COMMAND_COMMAND_TYPE_KHR" info_type="cl_command_type"/>
-               <enum name="CL_MUTABLE_DISPATCH_PROPERTIES_ARRAY_KHR" info_type="cl_ndrange_kernel_command_properties_khr[]"/>
+               <enum name="CL_MUTABLE_COMMAND_PROPERTIES_ARRAY_KHR" info_type="cl_command_properties_khr[]"/>
                <enum name="CL_MUTABLE_DISPATCH_KERNEL_KHR" info_type="cl_kernel"/>
                <enum name="CL_MUTABLE_DISPATCH_DIMENSIONS_KHR" info_type="cl_uint"/>
                <enum name="CL_MUTABLE_DISPATCH_GLOBAL_WORK_OFFSET_KHR" info_type="size_t[]"/>
@@ -7507,7 +7517,7 @@ server's OpenCL/api-docs repository.
             <require group="cl_command_buffer_properties_khr" etype="property list">
                 <enum name="CL_COMMAND_BUFFER_MUTABLE_DISPATCH_ASSERTS_KHR" followed="cl_mutable_dispatch_asserts_khr"/>
             </require>
-            <require group="cl_ndrange_kernel_command_properties_khr" etype="property list">
+            <require group="cl_command_properties_khr" etype="property list">
                 <enum name="CL_MUTABLE_DISPATCH_ASSERTS_KHR" followed="cl_mutable_dispatch_asserts_khr"/>
             </require>
             <require group="cl_mutable_dispatch_asserts_khr" etype="bitfield">

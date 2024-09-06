@@ -1704,10 +1704,11 @@ include::{generated}/api/version-notes/CL_MAP_WRITE_INVALIDATE_REGION.asciidoc[]
 |====
 --
 
+ifdef::cl_khr_d3d10_sharing,cl_khr_d3d11_sharing[]
+=== Creating Buffer Objects From Direct3D Buffer Resources
+endif::cl_khr_d3d10_sharing,cl_khr_d3d11_sharing[]
 
 ifdef::cl_khr_d3d10_sharing[]
-=== Creating OpenCL Buffer Objects From Direct3D 10 Buffer Resources
-
 [open,refpage='clCreateFromD3D10BufferKHR',desc='Create OpenCL buffer object from a Direct3D 10 buffer',type='protos']
 --
 To create an OpenCL buffer object from a Direct3D 10 buffer, call the
@@ -1763,8 +1764,6 @@ endif::cl_khr_d3d10_sharing[]
 
 
 ifdef::cl_khr_d3d11_sharing[]
-=== Creating OpenCL Buffer Objects From Direct3D 11 Buffer Resources
-
 [open,refpage='clCreateFromD3D11BufferKHR',desc='Create OpenCL buffer object from a Direct3D 11 buffer',type='protos']
 --
 To create an OpenCL buffer object from a Direct3D 11 buffer, call the
@@ -1820,7 +1819,7 @@ endif::cl_khr_d3d11_sharing[]
 
 
 ifdef::cl_khr_gl_sharing[]
-=== Creating OpenCL Buffer Objects From OpenGL Buffer Objects
+=== Creating Buffer Objects From OpenGL Buffer Objects
 
 [open,refpage='clCreateFromGLBuffer',desc='Create OpenCL buffer object from an OpenGL buffer object',type='protos']
 --
@@ -4364,7 +4363,7 @@ endif::cl_khr_d3d11_sharing[]
 
 
 ifdef::cl_khr_dx9_media_sharing[]
-=== Creating OpenCL Image Objects From DirectX 9 Media Resources
+=== Creating Image Objects From DirectX 9 Media Resources
 
 [open,refpage='clCreateFromDX9MediaSurfaceKHR',desc='Create OpenCL image object from a media surface',type='protos']
 --
@@ -4464,9 +4463,11 @@ performance.
 endif::cl_khr_dx9_media_sharing[]
 
 
-ifdef::cl_khr_d3d10_sharing[]
-=== Creating OpenCL Image Objects From Direct3D 10 Textures and Resources
+ifdef::cl_khr_d3d10_sharing,cl_khr_d3d11_sharing[]
+=== Creating Image Objects From Direct3D Textures and Resources
+endif::cl_khr_d3d10_sharing,cl_khr_d3d11_sharing[]
 
+ifdef::cl_khr_d3d10_sharing[]
 [open,refpage='clCreateFromD3D10Texture2DKHR',desc='Create OpenCL 2D image object from a Direct3D 10 2D texture',type='protos']
 --
 To create an OpenCL 2D image object from a subresource of a Direct3D 10 2D
@@ -4599,8 +4600,6 @@ endif::cl_khr_d3d10_sharing[]
 
 
 ifdef::cl_khr_d3d11_sharing[]
-=== Creating OpenCL Image Objects From Direct3D 11 Textures and Resources
-
 [open,refpage='clCreateFromD3D11Texture2DKHR',desc='Create OpenCL 2D image object from a Direct3D 11 2D texture',type='protos']
 --
 To create an OpenCL 2D image object from a subresource of a Direct3D 11 2D
@@ -4733,7 +4732,7 @@ endif::cl_khr_d3d11_sharing[]
 
 
 ifdef::cl_khr_egl_image[]
-=== Creating OpenCL Image Objects From EGL Images
+=== Creating Image Objects From EGL Images
 
 [open,refpage='clCreateFromEGLImageKHR',desc='Create cl_mem target from EGLImage source',type='protos']
 --
@@ -4812,7 +4811,7 @@ endif::cl_khr_egl_image[]
 
 
 ifdef::cl_khr_gl_sharing[]
-=== Creating OpenCL Image Objects From OpenGL Textures and Renderbuffers
+=== Creating Image Objects From OpenGL Textures and Renderbuffers
 
 [open,refpage='clCreateFromGLTexture',desc='Create OpenCL image object from an OpenGL texture object',type='protos']
 --
@@ -5240,10 +5239,7 @@ include::{generated}/api/version-notes/CL_PIPE_PROPERTIES.asciidoc[]
 --
 
 
-== Querying, Unmapping, Migrating, Retaining and Releasing Memory Objects
-
-// === Handling Memory Objects
-
+== Memory Objects
 
 === Retaining and Releasing Memory Objects
 
@@ -5442,7 +5438,8 @@ acquired.
 This is to guarantee that the state of the memory objects is up-to-date and
 they are accessible to OpenCL.
 
-The following restrictions shall apply -
+The following restrictions shall apply:
+
   * Each memory object must be acquired only once. Acquiring a memory object 
     multiple times without releasing it results in implementation-defined
     behavior.
@@ -5535,7 +5532,8 @@ commands in the other API.
 This is to guarantee that the state of memory objects is up-to-date and they
 are accessible to the other API.
 
-The following restrictions shall apply -
+The following restrictions shall apply:
+
   * Each memory object must be released only once. Releasing a memory object 
     multiple times without acquiring it results in implementation-defined
     behavior.
@@ -6210,9 +6208,11 @@ and {clGetImageInfo} with _param_name_ {CL_MEM_DX9_MEDIA_ADAPTER_TYPE_KHR},
 endif::cl_khr_dx9_media_sharing[]
 
 
-ifdef::cl_khr_d3d10_sharing[]
-=== Querying Direct3D Properties of Memory Objects Created From Direct3D 10 Resources
+ifdef::cl_khr_d3d10_sharing,cl_khr_d3d11_sharing[]
+=== Querying Direct3D Properties of Memory Objects Created From Direct3D Resources
+endif::cl_khr_d3d10_sharing,cl_khr_d3d11_sharing[]
 
+ifdef::cl_khr_d3d10_sharing[]
 Properties of Direct3D 10 objects may be queried using {clGetMemObjectInfo}
 and {clGetImageInfo} with _param_name_ {CL_MEM_D3D10_RESOURCE_KHR} and
 {CL_IMAGE_D3D10_SUBRESOURCE_KHR} respectively.
@@ -6220,8 +6220,6 @@ endif::cl_khr_d3d10_sharing[]
 
 
 ifdef::cl_khr_d3d11_sharing[]
-=== Querying Direct3D Properties of Memory Objects Created From Direct3D 11 Resources
-
 Properties of Direct3D 11 objects may be queried using {clGetMemObjectInfo}
 and {clGetImageInfo} with _param_name_ {CL_MEM_D3D11_RESOURCE_KHR} and
 {CL_IMAGE_D3D11_SUBRESOURCE_KHR} respectively.
@@ -6508,9 +6506,11 @@ Otherwise it returns one of the following errors:
 endif::cl_khr_dx9_media_sharing[]
 
 
-ifdef::cl_khr_d3d10_sharing[]
-=== Sharing Memory Objects Created From Direct3D 10 Resources Between Direct3D 10 and OpenCL Contexts
+ifdef::cl_khr_d3d10_sharing,cl_khr_d3d11_sharing[]
+=== Sharing Memory Objects Created From Direct3D Resources Between Direct3D and OpenCL Contexts
+endif::cl_khr_d3d10_sharing,cl_khr_d3d11_sharing[]
 
+ifdef::cl_khr_d3d10_sharing[]
 [open,refpage='clEnqueueAcquireD3D10ObjectsKHR',desc='Acquire OpenCL memory objects created from Direct3D 10 resources',type='protos']
 --
 To acquire OpenCL memory objects that have been created from Direct3D 10
@@ -6681,8 +6681,6 @@ endif::cl_khr_d3d10_sharing[]
 
 
 ifdef::cl_khr_d3d11_sharing[]
-=== Sharing Memory Objects Created From Direct3D 11 Resources Between Direct3D 11 and OpenCL Contexts
-
 [open,refpage='clEnqueueAcquireD3D11ObjectsKHR',desc='Acquire OpenCL memory objects created from Direct3D 11 resources',type='protos']
 --
 To acquire OpenCL memory objects that have been created from Direct3D 11
@@ -14398,6 +14396,11 @@ ifdef::cl_khr_command_buffer_multi_device[]
     _command_queue_ is `NULL`, then only one command-queue must have been set on
     _command_buffer_ creation; otherwise, _command_queue_ must not be `NULL`.
 endif::cl_khr_command_buffer_multi_device[]
+  * _properties_ specifies a list of properties for the command and their
+    corresponding values. Each property name is immediately followed by the
+    corresponding desired value. The list is terminated with 0. The
+    {cl_khr_command_buffer_EXT} extension does not define any properties, but
+    supported properties may be defined by layered extensions in future.
   * _sync_point_wait_list_, _num_sync_points_in_wait_list_ specify
     synchronization-points that need to complete before this particular
     command can be executed.
@@ -14460,6 +14463,7 @@ ifdef::cl_khr_command_buffer_multi_device[]
     associated with _command_queue_ and _command_buffer_ is not the same.
 endif::cl_khr_command_buffer_multi_device[]
   * {CL_INVALID_OPERATION} if _command_buffer_ has been finalized.
+  * {CL_INVALID_VALUE} if values specified in _properties_ are not valid.
   * {CL_INVALID_VALUE} if _mutable_handle_ is not `NULL`.
   * {CL_INVALID_SYNC_POINT_WAIT_LIST_KHR} if _sync_point_wait_list_ is
     `NULL` and _num_sync_points_in_wait_list_ is > 0, or
@@ -14492,6 +14496,11 @@ ifdef::cl_khr_command_buffer_multi_device[]
     _command_queue_ is `NULL`, then only one command-queue must have been set on
     _command_buffer_ creation; otherwise, _command_queue_ must not be `NULL`.
 endif::cl_khr_command_buffer_multi_device[]
+  * _properties_ specifies a list of properties for the command and their
+    corresponding values. Each property name is immediately followed by the
+    corresponding desired value. The list is terminated with 0. The
+    {cl_khr_command_buffer_EXT} extension does not define any properties, but
+    supported properties may be defined by layered extensions in future.
   * _src_buffer_, _dst_buffer_, _src_offset_, _dst_offset_, _size_ refer
     to {clEnqueueCopyBuffer}.
   * _sync_point_wait_list_, _num_sync_points_in_wait_list_ specify
@@ -14560,6 +14569,7 @@ New errors:
   * {CL_INVALID_COMMAND_BUFFER_KHR} if _command_buffer_ is not a valid
     command-buffer.
   * {CL_INVALID_OPERATION} if _command_buffer_ has been finalized.
+  * {CL_INVALID_VALUE} if values specified in _properties_ are not valid.
   * {CL_INVALID_VALUE} if _mutable_handle_ is not `NULL`.
 --
 
@@ -14583,6 +14593,11 @@ ifdef::cl_khr_command_buffer_multi_device[]
     _command_queue_ is `NULL`, then only one command-queue must have been set on
     _command_buffer_ creation; otherwise, _command_queue_ must not be `NULL`.
 endif::cl_khr_command_buffer_multi_device[]
+  * _properties_ specifies a list of properties for the command and their
+    corresponding values. Each property name is immediately followed by the
+    corresponding desired value. The list is terminated with 0. The
+    {cl_khr_command_buffer_EXT} extension does not define any properties, but
+    supported properties may be defined by layered extensions in future.
   * _src_origin_, _dst_origin_, _region_, _src_row_pitch_,
     _src_slice_pitch_, _dst_row_pitch_, _dst_slice_pitch_ refer to
     {clEnqueueCopyBufferRect}.
@@ -14669,6 +14684,7 @@ New errors:
   * {CL_INVALID_COMMAND_BUFFER_KHR} if _command_buffer_ is not a valid
     command-buffer.
   * {CL_INVALID_OPERATION} if _command_buffer_ has been finalized.
+  * {CL_INVALID_VALUE} if values specified in _properties_ are not valid.
   * {CL_INVALID_VALUE} if _mutable_handle_ is not `NULL`.
 --
 
@@ -14692,6 +14708,11 @@ ifdef::cl_khr_command_buffer_multi_device[]
     _command_queue_ is `NULL`, then only one command-queue must have been set on
     _command_buffer_ creation; otherwise, _command_queue_ must not be `NULL`.
 endif::cl_khr_command_buffer_multi_device[]
+  * _properties_ specifies a list of properties for the command and their
+    corresponding values. Each property name is immediately followed by the
+    corresponding desired value. The list is terminated with 0. The
+    {cl_khr_command_buffer_EXT} extension does not define any properties, but
+    supported properties may be defined by layered extensions in future.
   * _src_buffer_, _dst_image_, _src_offset_, _dst_origin_, _region_ refer to
     {clEnqueueCopyBufferToImage}
   * _sync_point_wait_list_, _num_sync_points_in_wait_list_ specify
@@ -14761,6 +14782,7 @@ New errors:
   * {CL_INVALID_COMMAND_BUFFER_KHR} if _command_buffer_ is not a valid
     command-buffer.
   * {CL_INVALID_OPERATION} if _command_buffer_ has been finalized.
+  * {CL_INVALID_VALUE} if values specified in _properties_ are not valid.
   * {CL_INVALID_VALUE} if _mutable_handle_ is not `NULL`.
 --
 
@@ -14783,6 +14805,11 @@ ifdef::cl_khr_command_buffer_multi_device[]
     _command_queue_ is `NULL`, then only one command-queue must have been set on
     _command_buffer_ creation; otherwise, _command_queue_ must not be `NULL`.
 endif::cl_khr_command_buffer_multi_device[]
+  * _properties_ specifies a list of properties for the command and their
+    corresponding values. Each property name is immediately followed by the
+    corresponding desired value. The list is terminated with 0. The
+    {cl_khr_command_buffer_EXT} extension does not define any properties, but
+    supported properties may be defined by layered extensions in future.
   * _src_image_, _dst_image_, _src_origin_, _dst_origin_, _region_ refer to
     {clEnqueueCopyImage}.
   * _sync_point_wait_list_, _num_sync_points_in_wait_list_ specify
@@ -14859,6 +14886,7 @@ New errors:
   * {CL_INVALID_COMMAND_BUFFER_KHR} if _command_buffer_ is not a valid
     command-buffer.
   * {CL_INVALID_OPERATION} if _command_buffer_ has been finalized.
+  * {CL_INVALID_VALUE} if values specified in _properties_ are not valid.
   * {CL_INVALID_VALUE} if _mutable_handle_ is not `NULL`.
 --
 
@@ -14882,6 +14910,11 @@ ifdef::cl_khr_command_buffer_multi_device[]
     _command_queue_ is `NULL`, then only one command-queue must have been set on
     _command_buffer_ creation; otherwise, _command_queue_ must not be `NULL`.
 endif::cl_khr_command_buffer_multi_device[]
+  * _properties_ specifies a list of properties for the command and their
+    corresponding values. Each property name is immediately followed by the
+    corresponding desired value. The list is terminated with 0. The
+    {cl_khr_command_buffer_EXT} extension does not define any properties, but
+    supported properties may be defined by layered extensions in future.
   * _src_image_, _dst_buffer_, _src_origin_, _region_, _dst_offset_ refer to
     {clEnqueueCopyImageToBuffer}.
   * _sync_point_wait_list_, _num_sync_points_in_wait_list_ specify
@@ -14951,6 +14984,7 @@ New errors:
   * {CL_INVALID_COMMAND_BUFFER_KHR} if _command_buffer_ is not a valid
     command-buffer.
   * {CL_INVALID_OPERATION} if _command_buffer_ has been finalized.
+  * {CL_INVALID_VALUE} if values specified in _properties_ are not valid.
   * {CL_INVALID_VALUE} if _mutable_handle_ is not `NULL`.
 --
 
@@ -14982,6 +15016,11 @@ ifdef::cl_khr_command_buffer_multi_device[]
     _command_queue_ is `NULL`, then only one command-queue must have been set on
     _command_buffer_ creation; otherwise, _command_queue_ must not be `NULL`.
 endif::cl_khr_command_buffer_multi_device[]
+  * _properties_ specifies a list of properties for the command and their
+    corresponding values. Each property name is immediately followed by the
+    corresponding desired value. The list is terminated with 0. The
+    {cl_khr_command_buffer_EXT} extension does not define any properties, but
+    supported properties may be defined by layered extensions in future.
   * _buffer_, _pattern_, _pattern_size_, _offset_, _size_ refer to
     {clEnqueueFillBuffer}.
   * _sync_point_wait_list_, _num_sync_points_in_wait_list_ specify
@@ -15050,6 +15089,7 @@ New errors:
   * {CL_INVALID_COMMAND_BUFFER_KHR} if _command_buffer_ is not a valid
     command-buffer.
   * {CL_INVALID_OPERATION} if _command_buffer_ has been finalized.
+  * {CL_INVALID_VALUE} if values specified in _properties_ are not valid.
   * {CL_INVALID_VALUE} if _mutable_handle_ is not `NULL`.
 --
 
@@ -15080,6 +15120,11 @@ ifdef::cl_khr_command_buffer_multi_device[]
     _command_queue_ is `NULL`, then only one command-queue must have been set on
     _command_buffer_ creation; otherwise, _command_queue_ must not be `NULL`.
 endif::cl_khr_command_buffer_multi_device[]
+  * _properties_ specifies a list of properties for the command and their
+    corresponding values. Each property name is immediately followed by the
+    corresponding desired value. The list is terminated with 0. The
+    {cl_khr_command_buffer_EXT} extension does not define any properties, but
+    supported properties may be defined by layered extensions in future.
   * _image_, _fill_color_, _origin_, _region_ refer to {clEnqueueFillImage}.
   * _sync_point_wait_list_, _num_sync_points_in_wait_list_ specify
     synchronization-points that need to complete before this particular
@@ -15147,6 +15192,7 @@ New errors:
   * {CL_INVALID_COMMAND_BUFFER_KHR} if _command_buffer_ is not a valid
     command-buffer.
   * {CL_INVALID_OPERATION} if _command_buffer_ has been finalized.
+  * {CL_INVALID_VALUE} if values specified in _properties_ are not valid.
   * {CL_INVALID_VALUE} if _mutable_handle_ is not `NULL`.
 --
 
@@ -15182,7 +15228,7 @@ ifdef::cl_khr_command_buffer_mutable_dispatch[]
     The {cl_khr_command_buffer_EXT} extension does not define any
     properties, but supported properties defined by extensions are defined
     in the <<ndrange-kernel-properties-table, List of supported properties
-    by {clCommandNDRangeKernelKHR}>> table.
+    by clCommandNDRangeKernelKHR>> table.
 endif::cl_khr_command_buffer_mutable_dispatch[]
   * _kernel_ is a valid kernel object which **must** have its arguments set.
     Any changes to _kernel_ after calling {clCommandNDRangeKernelKHR}, such
@@ -15394,8 +15440,8 @@ New errors:
 
   * {CL_INVALID_COMMAND_BUFFER_KHR} if _command_buffer_ is not a valid
     command-buffer.
-  * {CL_INVALID_VALUE} if values specified in _properties_ are not valid
   * {CL_INVALID_OPERATION} if _command_buffer_ has been finalized.
+  * {CL_INVALID_VALUE} if values specified in _properties_ are not valid.
   * {CL_INVALID_VALUE} if the {cl_khr_command_buffer_mutable_dispatch_EXT}
     extension is not supported and _mutable_handle_ is not `NULL`.
   * {CL_INVALID_OPERATION} if the device associated with _command_queue_
@@ -15444,6 +15490,11 @@ ifdef::cl_khr_command_buffer_multi_device[]
     _command_queue_ is `NULL`, then only one command-queue must have been set on
     _command_buffer_ creation; otherwise, _command_queue_ must not be `NULL`.
 endif::cl_khr_command_buffer_multi_device[]
+  * _properties_ specifies a list of properties for the command and thier
+    corresponding values. Each property name is immediately followed by the
+    corresponding desired value. The list is terminated with 0. The
+    {cl_khr_command_buffer_EXT} extension does not define any properties, but
+    supported properties may be defined by layered extensions in future.
   * _dst_ptr_ is the pointer to a host (if the device supports system SVM)
     or SVM memory allocation where data is copied to.
   * _src_ptr_ is the pointer to a host (if the device supports system SVM)
@@ -15518,6 +15569,7 @@ New errors:
   * {CL_INVALID_COMMAND_BUFFER_KHR} if _command_buffer_ is not a valid
     command-buffer.
   * {CL_INVALID_OPERATION} if _command_buffer_ has been finalized.
+  * {CL_INVALID_VALUE} if values specified in _properties_ are not valid.
   * {CL_INVALID_VALUE} if _mutable_handle_ is not `NULL`.
 --
 
@@ -15541,6 +15593,11 @@ ifdef::cl_khr_command_buffer_multi_device[]
     _command_queue_ is `NULL`, then only one command-queue must have been set on
     _command_buffer_ creation; otherwise, _command_queue_ must not be `NULL`.
 endif::cl_khr_command_buffer_multi_device[]
+  * _properties_ specifies a list of properties for the command and their
+    corresponding values. Each property name is immediately followed by the
+    corresponding desired value. The list is terminated with 0. The
+    {cl_khr_command_buffer_EXT} extension does not define any properties, but
+    supported properties may be defined by layered extensions in future.
   * _svm_ptr_ is a pointer to a (if the device supports system SVM)
     or SVM memory region that will be filled with _pattern_.
     It must be aligned to _pattern_size_ bytes.
@@ -15630,6 +15687,7 @@ New errors:
   * {CL_INVALID_COMMAND_BUFFER_KHR} if _command_buffer_ is not a valid
     command-buffer.
   * {CL_INVALID_OPERATION} if _command_buffer_ has been finalized.
+  * {CL_INVALID_VALUE} if values specified in _properties_ are not valid.
   * {CL_INVALID_VALUE} if _mutable_handle_ is not `NULL`.
 --
 
@@ -16167,12 +16225,11 @@ include::{generated}/api/version-notes/CL_MUTABLE_COMMAND_COMMAND_TYPE_KHR.ascii
 
       The list of supported event command types defined by {clGetEventInfo}
       is used with the matching command.
-| {CL_MUTABLE_DISPATCH_PROPERTIES_ARRAY_KHR_anchor}
+| {CL_MUTABLE_COMMAND_PROPERTIES_ARRAY_KHR_anchor}
 
-include::{generated}/api/version-notes/CL_MUTABLE_DISPATCH_PROPERTIES_ARRAY_KHR.asciidoc[]
-  | {cl_ndrange_kernel_command_properties_khr_TYPE}[]
-    | Return the properties argument specified on _command_ recording with
-      {clCommandNDRangeKernelKHR}.
+include::{generated}/api/version-notes/CL_MUTABLE_COMMAND_PROPERTIES_ARRAY_KHR.asciidoc[]
+  | {cl_command_properties_khr_TYPE}[]
+    | Return the properties argument specified on _command_ recording.
 
       If the properties argument specified on creation of _command_ was not
       `NULL`, the implementation must return the values specified in the
@@ -16180,10 +16237,8 @@ include::{generated}/api/version-notes/CL_MUTABLE_DISPATCH_PROPERTIES_ARRAY_KHR.
       properties.
 
       If the properties argument specified on creation of _command_ was
-      `NULL`, or _command_ was not recorded from a
-      {clCommandNDRangeKernelKHR} command, the implementation must return
-      _param_value_size_ret_ equal to 0, indicating that there are no
-      properties to be returned.
+      `NULL`, the implementation must return _param_value_size_ret_ equal to 0,
+      indicating that there are no properties to be returned.
 | {CL_MUTABLE_DISPATCH_KERNEL_KHR_anchor}
 
 include::{generated}/api/version-notes/CL_MUTABLE_DISPATCH_KERNEL_KHR.asciidoc[]
