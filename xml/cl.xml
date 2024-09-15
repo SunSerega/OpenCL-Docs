@@ -6395,7 +6395,7 @@ server's OpenCL/api-docs repository.
                 <type name="cl_diagnostic_verbose_level_intel"/>
             </require>
             <require group="cl_context_properties" etype="property list">
-                <enum name="CL_CONTEXT_SHOW_DIAGNOSTICS_INTEL" followed="cl_context_property_diagnostics_level"/>
+                <enum name="CL_CONTEXT_SHOW_DIAGNOSTICS_INTEL" followed="cl_diagnostic_verbose_level_intel"/>
             </require>
             <require group="cl_diagnostic_verbose_level_intel">
                 <enum name="CL_CONTEXT_DIAGNOSTICS_LEVEL_ALL_INTEL"/>
