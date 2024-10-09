@@ -125,7 +125,7 @@ server's OpenCL/api-docs repository.
         <type category="define">typedef struct _cl_accelerator_intel* <name>cl_accelerator_intel</name>;</type>
         <type category="define">typedef <type>cl_uint</type>          <name>cl_accelerator_type_intel</name>;</type>
         <type category="define">typedef <type>cl_uint</type>          <name>cl_accelerator_info_intel</name>;</type>
-        <type category="define">typedef <type>cl_uint</type>          <name>cl_diagnostics_verbose_level</name>;</type>
+        <type category="define">typedef <type>cl_bitfield</type>      <name>cl_diagnostic_verbose_level_intel</name>;</type>
         <type category="define">typedef <type>cl_uint</type>          <name>cl_va_api_device_source_intel</name>;</type>
         <type category="define">typedef <type>cl_uint</type>          <name>cl_va_api_device_set_intel</name>;</type>
         <type category="define">typedef struct __GLsync *             <name>cl_GLsync</name>;</type>
@@ -506,7 +506,7 @@ server's OpenCL/api-docs repository.
         <enum value="8"             name="CL_LUID_SIZE_KHR"/>
     </enums>
 
-    <enums name="Constants.cl_arm_import_memory" vendor="ARM" comment = "cl_arm_import_memory size constants, in cl_ext.h">
+    <enums name="Constants.cl_arm_import_memory" vendor="Arm" comment = "cl_arm_import_memory size constants, in cl_ext.h">
         <enum value="SIZE_MAX"      name="CL_IMPORT_MEMORY_WHOLE_ALLOCATION_ARM"/>
     </enums>
 
@@ -981,7 +981,7 @@ server's OpenCL/api-docs repository.
             <unused start="0x8" end="0x80000000"/>
     </enums>
 
-    <enums name="cl_arm_device_svm_capabilities.flags" vendor="ARM" type="bitmask">
+    <enums name="cl_arm_device_svm_capabilities.flags" vendor="Arm" type="bitmask">
         <enum bitpos="0"            name="CL_DEVICE_SVM_COARSE_GRAIN_BUFFER_ARM"/>
         <enum bitpos="1"            name="CL_DEVICE_SVM_FINE_GRAIN_BUFFER_ARM"/>
         <enum bitpos="2"            name="CL_DEVICE_SVM_FINE_GRAIN_SYSTEM_ARM"/>
@@ -989,13 +989,13 @@ server's OpenCL/api-docs repository.
             <unused start="0x10" end="0x80000000"/>
     </enums>
 
-    <enums name="cl_arm_svm_alloc.flags" vendor="ARM" type="bitmask">
+    <enums name="cl_arm_svm_alloc.flags" vendor="Arm" type="bitmask">
         <enum bitpos="10"           name="CL_MEM_SVM_FINE_GRAIN_BUFFER_ARM"/>
         <enum bitpos="11"           name="CL_MEM_SVM_ATOMICS_ARM"/>
             <unused start="0x4" end="0x80000000"/>
     </enums>
 
-    <enums name="cl_intel_driver_diagnostics" vendor="Intel" type="bitmask">
+    <enums name="cl_diagnostic_verbose_level_intel" comment="From cl_intel_driver_diagnostics" vendor="Intel" type="bitmask">
         <enum value="0xff"          name="CL_CONTEXT_DIAGNOSTICS_LEVEL_ALL_INTEL"/>
         <enum bitpos="0"            name="CL_CONTEXT_DIAGNOSTICS_LEVEL_GOOD_INTEL"/>
         <enum bitpos="1"            name="CL_CONTEXT_DIAGNOSTICS_LEVEL_BAD_INTEL"/>
@@ -2080,7 +2080,7 @@ server's OpenCL/api-docs repository.
             <unused start="0x40AA" end="0x40AF"/>
     </enums>
 
-    <enums start="0x40B0" end="0x40BF" name="enums.40B0" vendor="ARM" comment="Per Bug 10337">
+    <enums start="0x40B0" end="0x40BF" name="enums.40B0" vendor="Arm" comment="Per Bug 10337">
         <enum value="0x40B0"        name="CL_PRINTF_CALLBACK_ARM"/>
         <enum value="0x40B1"        name="CL_PRINTF_BUFFERSIZE_ARM"/>
         <enum value="0x40B2"        name="CL_IMPORT_TYPE_ARM"/>
@@ -6281,10 +6281,12 @@ server's OpenCL/api-docs repository.
         </extension>
         <extension name="cl_intel_driver_diagnostics" revision="0.0.0" supported="opencl">
             <require>
-                <type name="cl_diagnostics_verbose_level"/>
+                <type name="cl_diagnostic_verbose_level_intel"/>
             </require>
             <require comment="cl_context_properties">
                 <enum name="CL_CONTEXT_SHOW_DIAGNOSTICS_INTEL"/>
+            </require>
+            <require comment="cl_diagnostic_verbose_level_intel">
                 <enum name="CL_CONTEXT_DIAGNOSTICS_LEVEL_ALL_INTEL"/>
                 <enum name="CL_CONTEXT_DIAGNOSTICS_LEVEL_GOOD_INTEL"/>
                 <enum name="CL_CONTEXT_DIAGNOSTICS_LEVEL_BAD_INTEL"/>
@@ -7045,7 +7047,7 @@ server's OpenCL/api-docs repository.
                 <command name="clRetainSemaphoreKHR"/>
             </require>
         </extension>
-        <extension name="cl_khr_external_semaphore" revision="1.0.0" supported="opencl" depends="CL_VERSION_1_2+cl_khr_semaphore" ratified="opencl">
+        <extension name="cl_khr_external_semaphore" revision="1.0.1" supported="opencl" depends="CL_VERSION_1_2+cl_khr_semaphore" ratified="opencl">
             <require>
                 <type name="CL/cl.h"/>
             </require>
@@ -7104,7 +7106,7 @@ server's OpenCL/api-docs repository.
                 <enum name="CL_SEMAPHORE_HANDLE_OPAQUE_WIN32_NAME_KHR"/>
             </require>
         </extension>
-        <extension name="cl_khr_external_memory" revision="1.0.0" supported="opencl" depends="CL_VERSION_3_0" ratified="opencl">
+        <extension name="cl_khr_external_memory" revision="1.0.1" supported="opencl" depends="CL_VERSION_3_0" ratified="opencl">
             <require>
                 <type name="CL/cl.h"/>
             </require>
