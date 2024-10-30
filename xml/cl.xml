@@ -125,7 +125,7 @@ server's OpenCL/api-docs repository.
         <type category="define">typedef struct _cl_accelerator_intel* <name>cl_accelerator_intel</name>;</type>
         <type category="define">typedef <type>cl_uint</type>          <name>cl_accelerator_type_intel</name>;</type>
         <type category="define">typedef <type>cl_uint</type>          <name>cl_accelerator_info_intel</name>;</type>
-        <type category="define">typedef <type>cl_uint</type>          <name>cl_diagnostics_verbose_level</name>;</type>
+        <type category="define">typedef <type>cl_bitfield</type>      <name>cl_diagnostic_verbose_level_intel</name>;</type>
         <type category="define">typedef <type>cl_uint</type>          <name>cl_va_api_device_source_intel</name>;</type>
         <type category="define">typedef <type>cl_uint</type>          <name>cl_va_api_device_set_intel</name>;</type>
         <type category="define">typedef struct __GLsync *             <name>cl_GLsync</name>;</type>
@@ -173,7 +173,6 @@ server's OpenCL/api-docs repository.
         <type category="define">typedef <type>intptr_t</type>         <name>cl_device_partition_property</name>;</type>
         <type category="define">typedef <type>cl_bitfield</type>      <name>cl_device_affinity_domain</name>;</type>
         <type category="define">typedef <type>intptr_t</type>         <name>cl_context_properties</name>;</type>
-        <type category="define">typedef <type>intptr_t</type>         <name>cl_context_property_diagnostics_level</name>;</type>
         <type category="define">typedef <type>cl_uint</type>          <name>cl_context_info</name>;</type>
         <type category="define">typedef <type>cl_properties</type>    <name>cl_queue_properties</name>;</type>
         <type category="define">typedef <type>cl_properties</type>    <name>cl_queue_properties_khr</name>;</type>
@@ -263,25 +262,25 @@ server's OpenCL/api-docs repository.
         <type category="define">typedef <type>cl_uint</type>          <name>cl_command_termination_reason_arm</name>;</type>
         <type category="define">typedef <type>cl_uint</type>          <name>cl_host_cache_policy</name>;</type>
         <type category="define">typedef <type>cl_uint</type>          <name>cl_allocation_type</name>;</type>
-        <type category="define">typedef <type>cl_uint</type>          <name>cl_mb_block_type</name>;</type>
-        <type category="define">typedef <type>cl_uint</type>          <name>cl_subpixel_mode</name>;</type>
-        <type category="define">typedef <type>cl_uint</type>          <name>cl_sad_adjust_mode</name>;</type>
-        <type category="define">typedef <type>cl_uint</type>          <name>cl_search_path_type</name>;</type>
+        <type category="define">typedef <type>cl_uint</type>          <name>cl_mb_block_type_intel</name>;</type>
+        <type category="define">typedef <type>cl_uint</type>          <name>cl_subpixel_mode_intel</name>;</type>
+        <type category="define">typedef <type>cl_uint</type>          <name>cl_sad_adjust_mode_intel</name>;</type>
+        <type category="define">typedef <type>cl_uint</type>          <name>cl_search_path_type_intel</name>;</type>
         <type category="define">typedef <type>cl_uint</type>          <name>cl_device_me_version</name>;</type>
         <type category="define">typedef <type>cl_uint</type>          <name>cl_device_avc_me_version</name>;</type>
         <type category="define">typedef <type>cl_int</type>           <name>cl_command_execution_status</name>;</type>
         <type category="define">typedef <type>cl_int</type>           <name>cl_error_code</name>;</type>
-        
+
             <comment>Structure types</comment>
         <type category="struct" name="cl_dx9_surface_info_khr">
             <member><type>IDirect3DSurface9</type>*  <name>resource</name></member>
             <member><type>HANDLE</type>              <name>shared_handle</name></member>
         </type>
         <type category="struct" name="cl_motion_estimation_desc_intel">
-            <member><type>cl_mb_block_type</type>    <name>mb_block_type</name></member>
-            <member><type>cl_subpixel_mode</type>    <name>subpixel_mode</name></member>
-            <member><type>cl_sad_adjust_mode</type>  <name>sad_adjust_mode</name></member>
-            <member><type>cl_search_path_type</type> <name>search_path_type</name></member>
+            <member><type>cl_mb_block_type_intel</type>    <name>mb_block_type</name></member>
+            <member><type>cl_subpixel_mode_intel</type>    <name>subpixel_mode</name></member>
+            <member><type>cl_sad_adjust_mode_intel</type>  <name>sad_adjust_mode</name></member>
+            <member><type>cl_search_path_type_intel</type> <name>search_path_type</name></member>
         </type>
         <type category="struct" name="cl_mem_ext_host_ptr">
             <member><type>cl_allocation_type</type>  <name>allocation_type</name></member>
@@ -1076,7 +1075,7 @@ server's OpenCL/api-docs repository.
             <unused start="0x4" end="0x80000000"/>
     </enums>
 
-    <enums name="cl_context_property_diagnostics_level" comment="From cl_intel_driver_diagnostics" vendor="Intel" type="bitmask">
+    <enums name="cl_diagnostic_verbose_level_intel" comment="From cl_intel_driver_diagnostics" vendor="Intel" type="bitmask">
         <enum value="0xff"          name="CL_CONTEXT_DIAGNOSTICS_LEVEL_ALL_INTEL"/>
         <enum bitpos="0"            name="CL_CONTEXT_DIAGNOSTICS_LEVEL_GOOD_INTEL"/>
         <enum bitpos="1"            name="CL_CONTEXT_DIAGNOSTICS_LEVEL_BAD_INTEL"/>
@@ -5733,7 +5732,7 @@ server's OpenCL/api-docs repository.
             <require>
                 <type name="CL/cl.h"/>
             </require>
-            <require group="cl_device_info" etype="obj info" condition="!defined(CL_VERSION_1_2)">
+            <require group="cl_device_info" etype="obj info" condition="!defined(CL_VERSION_1_2)" comment="defined in CL.h for OpenCL 1.2 and newer">
                 <enum name="CL_DEVICE_DOUBLE_FP_CONFIG" info_type="cl_device_fp_config"/>
             </require>
         </extension>
@@ -6342,29 +6341,29 @@ server's OpenCL/api-docs repository.
         <extension name="cl_intel_motion_estimation" revision="0.0.0" supported="opencl">
             <require>
                 <type name="cl_motion_estimation_desc_intel"/>
-                <type name="cl_mb_block_type"/>
-                <type name="cl_subpixel_mode"/>
-                <type name="cl_sad_adjust_mode"/>
-                <type name="cl_search_path_type"/>
+                <type name="cl_mb_block_type_intel"/>
+                <type name="cl_subpixel_mode_intel"/>
+                <type name="cl_sad_adjust_mode_intel"/>
+                <type name="cl_search_path_type_intel"/>
             </require>
             <require group="cl_accelerator_type_intel">
                 <enum name="CL_ACCELERATOR_TYPE_MOTION_ESTIMATION_INTEL"/>
             </require>
-            <require group="cl_mb_block_type">
+            <require group="cl_mb_block_type_intel">
                 <enum name="CL_ME_MB_TYPE_16x16_INTEL"/>
                 <enum name="CL_ME_MB_TYPE_8x8_INTEL"/>
                 <enum name="CL_ME_MB_TYPE_4x4_INTEL"/>
             </require>
-            <require group="cl_subpixel_mode">
+            <require group="cl_subpixel_mode_intel">
                 <enum name="CL_ME_SUBPIXEL_MODE_INTEGER_INTEL"/>
                 <enum name="CL_ME_SUBPIXEL_MODE_HPEL_INTEL"/>
                 <enum name="CL_ME_SUBPIXEL_MODE_QPEL_INTEL"/>
             </require>
-            <require group="cl_sad_adjust_mode">
+            <require group="cl_sad_adjust_mode_intel">
                 <enum name="CL_ME_SAD_ADJUST_MODE_NONE_INTEL"/>
                 <enum name="CL_ME_SAD_ADJUST_MODE_HAAR_INTEL"/>
             </require>
-            <require group="cl_search_path_type">
+            <require group="cl_search_path_type_intel">
                 <enum name="CL_ME_SEARCH_PATH_RADIUS_2_2_INTEL"/>
                 <enum name="CL_ME_SEARCH_PATH_RADIUS_4_4_INTEL"/>
                 <enum name="CL_ME_SEARCH_PATH_RADIUS_16_12_INTEL"/>
@@ -6468,13 +6467,12 @@ server's OpenCL/api-docs repository.
         </extension>
         <extension name="cl_intel_driver_diagnostics" revision="0.0.0" supported="opencl">
             <require>
-                <type name="cl_diagnostics_verbose_level"/>
-                <type name="cl_context_property_diagnostics_level"/>
+                <type name="cl_diagnostic_verbose_level_intel"/>
             </require>
             <require group="cl_context_properties" etype="property list">
-                <enum name="CL_CONTEXT_SHOW_DIAGNOSTICS_INTEL" followed="cl_context_property_diagnostics_level"/>
+                <enum name="CL_CONTEXT_SHOW_DIAGNOSTICS_INTEL" followed="cl_diagnostic_verbose_level_intel"/>
             </require>
-            <require group="cl_context_property_diagnostics_level" etype="bitfield">
+            <require group="cl_diagnostic_verbose_level_intel">
                 <enum name="CL_CONTEXT_DIAGNOSTICS_LEVEL_ALL_INTEL"/>
                 <enum name="CL_CONTEXT_DIAGNOSTICS_LEVEL_GOOD_INTEL"/>
                 <enum name="CL_CONTEXT_DIAGNOSTICS_LEVEL_BAD_INTEL"/>
@@ -6864,7 +6862,7 @@ server's OpenCL/api-docs repository.
                 <enum name="CL_MEM_ALLOC_INITIAL_PLACEMENT_DEVICE_INTEL"/>
                 <enum name="CL_MEM_ALLOC_INITIAL_PLACEMENT_HOST_INTEL"/>
             </require>
-            <require group="cl_mem_info" etype="obj info">
+            <require group="cl_mem_info_intel" etype="obj info">
                 <enum name="CL_MEM_ALLOC_TYPE_INTEL" info_type="cl_unified_shared_memory_type_intel"/>
                 <enum name="CL_MEM_ALLOC_BASE_PTR_INTEL" info_type="void*"/>
                 <enum name="CL_MEM_ALLOC_SIZE_INTEL" info_type="size_t"/>
@@ -7054,9 +7052,6 @@ server's OpenCL/api-docs repository.
             <require>
                 <type name="CL/cl.h"/>
             </require>
-            <require>
-                <type name="cl_command_termination_reason_arm"/>
-            </require>
             <require group="cl_mem_properties" etype="property list">
                 <enum name="CL_MEM_ALLOC_FLAGS_IMG" followed="cl_mem_alloc_flags_img"/>
             </require>
@@ -7075,6 +7070,7 @@ server's OpenCL/api-docs repository.
         <extension name="cl_arm_controlled_kernel_termination" revision="0.0.0" supported="opencl">
             <require comment="Types">
                 <type name="cl_device_controlled_termination_capabilities_arm"/>
+                <type name="cl_command_termination_reason_arm"/>
             </require>
             <require group="cl_error_code">
                 <enum name="CL_COMMAND_TERMINATED_ITSELF_WITH_FAILURE_ARM"/>
@@ -7248,7 +7244,7 @@ server's OpenCL/api-docs repository.
                 <command name="clRetainSemaphoreKHR"/>
             </require>
         </extension>
-        <extension name="cl_khr_external_semaphore" revision="1.0.0" supported="opencl" depends="CL_VERSION_1_2+cl_khr_semaphore" ratified="opencl">
+        <extension name="cl_khr_external_semaphore" revision="1.0.1" supported="opencl" depends="CL_VERSION_1_2+cl_khr_semaphore" ratified="opencl">
             <require>
                 <type name="CL/cl.h"/>
             </require>
@@ -7308,7 +7304,7 @@ server's OpenCL/api-docs repository.
                 <enum name="CL_SEMAPHORE_HANDLE_OPAQUE_WIN32_NAME_KHR"/>
             </require>
         </extension>
-        <extension name="cl_khr_external_memory" revision="1.0.0" supported="opencl" depends="CL_VERSION_3_0" ratified="opencl">
+        <extension name="cl_khr_external_memory" revision="1.0.1" supported="opencl" depends="CL_VERSION_3_0" ratified="opencl">
             <require>
                 <type name="CL/cl.h"/>
             </require>
@@ -7500,7 +7496,7 @@ server's OpenCL/api-docs repository.
             <require>
                 <type name="CL/cl.h"/>
             </require>
-            <require group="cl_command_type" comment="clGetEventInfo response when param_name is CL_EVENT_COMMAND_TYPE">
+            <require group="cl_command_type">
                 <enum name="CL_COMMAND_READ_HOST_PIPE_INTEL"/>
                 <enum name="CL_COMMAND_WRITE_HOST_PIPE_INTEL"/>
             </require>
@@ -7630,7 +7626,6 @@ server's OpenCL/api-docs repository.
                 <enum name="CL_COMMAND_BUFFER_PLATFORM_AUTOMATIC_REMAP_KHR"/>
             </require>
             <require group="cl_device_info" etype="obj info">
-                <enum name="CL_DEVICE_COMMAND_BUFFER_CAPABILITIES_KHR" info_type="cl_device_command_buffer_capabilities_khr"/>
                 <enum name="CL_DEVICE_COMMAND_BUFFER_NUM_SYNC_DEVICES_KHR" info_type="cl_uint"/>
                 <enum name="CL_DEVICE_COMMAND_BUFFER_SYNC_DEVICES_KHR" info_type="cl_device_id[]"/>
             </require>
