@@ -7628,7 +7628,7 @@ server's OpenCL/api-docs repository.
             </require>
         </extension>
         <extension name="cl_ext_immutable_memory_objects" revision="1.0.0" depends="CL_VERSION_1_2" supported="opencl">
-            <require comment="cl_mem_flags">
+            <require group="cl_mem_flags" etype="bitfield">
                 <enum name="CL_MEM_IMMUTABLE_EXT"/>
             </require>
         </extension>
