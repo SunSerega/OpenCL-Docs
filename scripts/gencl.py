@@ -1,56 +1,61 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 #
-# Copyright (c) 2013-2020 The Khronos Group Inc.
+# Copyright 2013-2024 The Khronos Group Inc.
 #
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
+# SPDX-License-Identifier: Apache-2.0
 
-import argparse, cProfile, pdb, string, sys, time
-from reg import *
-from generator import write
+import argparse
+import pdb
+import re
+import sys
+import time
+import xml.etree.ElementTree as etree
+
 from cgenerator import CGeneratorOptions, COutputGenerator
 from docgenerator import DocGeneratorOptions, DocOutputGenerator
-from extensionmetadocgenerator import ExtensionMetaDocGeneratorOptions, ExtensionMetaDocOutputGenerator
+from extensionmetadocgenerator import (ExtensionMetaDocGeneratorOptions,
+                                       ExtensionMetaDocOutputGenerator)
+
+from generator import write
+
+
 from pygenerator import PyOutputGenerator
-from clconventions import OpenCLConventions
+from reflib import logDiag, logWarn, logErr, setLogFile
+from reg import Registry
+from apiconventions import APIConventions
 
 # Simple timer functions
 startTime = None
+
 
 def startTimer(timeit):
     global startTime
     if timeit:
         startTime = time.process_time()
 
+
 def endTimer(timeit, msg):
     global startTime
     if timeit:
         endTime = time.process_time()
-        write(msg, endTime - startTime, file=sys.stderr)
+        logDiag(msg, endTime - startTime)
         startTime = None
 
-# Turn a list of strings into a regexp string matching exactly those strings
-def makeREstring(list, default = None):
-    if len(list) > 0 or default == None:
-        return '^(' + '|'.join(list) + ')$'
-    else:
-        return default
 
-# Returns a directory of [ generator function, generator options ] indexed
-# by specified short names. The generator options incorporate the following
-# parameters:
-#
-# args is an parsed argument object; see below for the fields that are used.
+def makeREstring(strings, default=None, strings_are_regex=False):
+    """Turn a list of strings into a regexp string matching exactly those strings."""
+    if strings or default is None:
+        if not strings_are_regex:
+            strings = (re.escape(s) for s in strings)
+        return '^(' + '|'.join(strings) + ')$'
+    return default
+
 def makeGenOpts(args):
+    """Returns a directory of [ generator function, generator options ] indexed
+    by specified short names. The generator options incorporate the following
+    parameters:
+
+    args is an parsed argument object; see below for the fields that are used."""
     global genOpts
     genOpts = {}
 
@@ -66,6 +71,9 @@ def makeGenOpts(args):
     # Extensions to emit (list of extensions)
     emitExtensions = args.emitExtensions
 
+    # SPIR-V capabilities / features to emit (list of extensions & capabilities)
+    # emitSpirv = args.emitSpirv
+
     # Features to include (list of features)
     features = args.feature
 
@@ -75,33 +83,33 @@ def makeGenOpts(args):
     # Output target directory
     directory = args.directory
 
+    # Path to generated files, particularly api.py
+    genpath = args.genpath
+
+    # Generate MISRA C-friendly headers
+    misracstyle = args.misracstyle;
+
+    # Generate MISRA C++-friendly headers
+    misracppstyle = args.misracppstyle;
+
     # Descriptive names for various regexp patterns used to select
     # versions and extensions
-    allFeatures     = allExtensions = '.*'
-    noFeatures      = noExtensions = None
+    allSpirv = allFeatures = allExtensions = r'.*'
 
     # Turn lists of names/patterns into matching regular expressions
     addExtensionsPat     = makeREstring(extensions, None)
     removeExtensionsPat  = makeREstring(removeExtensions, None)
     emitExtensionsPat    = makeREstring(emitExtensions, allExtensions)
+    # emitSpirvPat         = makeREstring(emitSpirv, allSpirv)
     featuresPat          = makeREstring(features, allFeatures)
 
     # Copyright text prefixing all headers (list of strings).
+    # The SPDX formatting below works around constraints of the 'reuse' tool
     prefixStrings = [
         '/*',
-        '** Copyright (c) 2015-2020 The Khronos Group Inc.',
+        '** Copyright 2015-2024 The Khronos Group Inc.',
         '**',
-        '** Licensed under the Apache License, Version 2.0 (the "License");',
-        '** you may not use this file except in compliance with the License.',
-        '** You may obtain a copy of the License at',
-        '**',
-        '**     http://www.apache.org/licenses/LICENSE-2.0',
-        '**',
-        '** Unless required by applicable law or agreed to in writing, software',
-        '** distributed under the License is distributed on an "AS IS" BASIS,',
-        '** WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.',
-        '** See the License for the specific language governing permissions and',
-        '** limitations under the License.',
+        '** SPDX' + '-License-Identifier: Apache-2.0',
         '*/',
         ''
     ]
@@ -117,11 +125,14 @@ def makeGenOpts(args):
 
     # Defaults for generating re-inclusion protection wrappers (or not)
     protectFile = protect
-    protectFeature = protect
-    protectProto = protect
 
     # An API style conventions object
-    conventions = OpenCLConventions()
+    conventions = APIConventions()
+
+    if args.apiname is not None:
+        defaultAPIName = args.apiname
+    else:
+        defaultAPIName = conventions.xml_api_name
 
     # API include files for spec and ref pages
     # Overwrites include subdirectories in spec source tree
@@ -136,11 +147,12 @@ def makeGenOpts(args):
             conventions       = conventions,
             filename          = 'timeMarker',
             directory         = directory,
-            apiname           = 'opencl',
+            genpath           = genpath,
+            apiname           = defaultAPIName,
             profile           = None,
             versions          = featuresPat,
             emitversions      = featuresPat,
-            defaultExtensions = None,
+            defaultExtensions = defaultExtensions,
             addExtensions     = addExtensionsPat,
             removeExtensions  = removeExtensionsPat,
             emitExtensions    = emitExtensionsPat,
@@ -152,103 +164,47 @@ def makeGenOpts(args):
             expandEnumerants  = False)
         ]
 
-    # API names to validate man/api spec includes & links
-    genOpts['clapi.py'] = [
+    # Python representation of API information, used by scripts that
+    # don't need to load the full XML.
+    genOpts['apimap.py'] = [
           PyOutputGenerator,
           DocGeneratorOptions(
             conventions       = conventions,
-            filename          = 'clapi.py',
+            filename          = 'apimap.py',
             directory         = directory,
-            apiname           = 'opencl',
+            genpath           = None,
+            apiname           = defaultAPIName,
             profile           = None,
             versions          = featuresPat,
             emitversions      = featuresPat,
             defaultExtensions = None,
             addExtensions     = addExtensionsPat,
             removeExtensions  = removeExtensionsPat,
-            emitExtensions    = emitExtensionsPat)
+            emitExtensions    = emitExtensionsPat,
+            reparentEnums     = False)
         ]
 
+
     # Extension metainformation for spec extension appendices
+    # Includes all extensions by default, but only so that the generated
+    # 'promoted_extensions_*' files refer to all extensions that were
+    # promoted to a core version.
     genOpts['extinc'] = [
           ExtensionMetaDocOutputGenerator,
           ExtensionMetaDocGeneratorOptions(
             conventions       = conventions,
             filename          = 'timeMarker',
             directory         = directory,
-            apiname           = 'opencl',
+            genpath           = None,
+            apiname           = defaultAPIName,
             profile           = None,
             versions          = featuresPat,
             emitversions      = None,
             defaultExtensions = defaultExtensions,
-            addExtensions     = None,
+            addExtensions     = addExtensionsPat,
             removeExtensions  = None,
             emitExtensions    = emitExtensionsPat)
         ]
-
-    # Platform extensions, in their own header files
-    # Each element of the platforms[] array defines information for
-    # generating a single platform:
-    #   [0] is the generated header file name
-    #   [1] is the set of platform extensions to generate
-    #   [2] is additional extensions whose interfaces should be considered,
-    #   but suppressed in the output, to avoid duplicate definitions of
-    #   dependent types like VkDisplayKHR and VkSurfaceKHR which come from
-    #   non-platform extensions.
-
-    # Track all platform extensions, for exclusion from vulkan_core.h
-    allPlatformExtensions = []
-
-    # # Extensions suppressed for all platforms.
-    # # Covers common WSI extension types.
-    # commonSuppressExtensions = [ 'VK_KHR_display', 'VK_KHR_swapchain' ]
-    #
-    # platforms = [
-    #     [ 'vulkan_android.h',     [ 'VK_KHR_android_surface',
-    #                                 'VK_ANDROID_external_memory_android_hardware_buffer'
-    #                                                               ], commonSuppressExtensions ],
-    #     [ 'vulkan_fuchsia.h',     [ 'VK_FUCHSIA_imagepipe_surface'], commonSuppressExtensions ],
-    #     [ 'vulkan_ios.h',         [ 'VK_MVK_ios_surface'          ], commonSuppressExtensions ],
-    #     [ 'vulkan_macos.h',       [ 'VK_MVK_macos_surface'        ], commonSuppressExtensions ],
-    #     [ 'vulkan_vi.h',          [ 'VK_NN_vi_surface'            ], commonSuppressExtensions ],
-    #     [ 'vulkan_wayland.h',     [ 'VK_KHR_wayland_surface'      ], commonSuppressExtensions ],
-    #     [ 'vulkan_win32.h',       [ 'VK_.*_win32(|_.*)'           ], commonSuppressExtensions + [ 'VK_KHR_external_semaphore', 'VK_KHR_external_memory_capabilities', 'VK_KHR_external_fence', 'VK_KHR_external_fence_capabilities', 'VK_NV_external_memory_capabilities' ] ],
-    #     [ 'vulkan_xcb.h',         [ 'VK_KHR_xcb_surface'          ], commonSuppressExtensions ],
-    #     [ 'vulkan_xlib.h',        [ 'VK_KHR_xlib_surface'         ], commonSuppressExtensions ],
-    #     [ 'vulkan_xlib_xrandr.h', [ 'VK_EXT_acquire_xlib_display' ], commonSuppressExtensions ],
-    # ]
-    #
-    # for platform in platforms:
-    #     headername = platform[0]
-    #
-    #     allPlatformExtensions += platform[1]
-    #
-    #     addPlatformExtensionsRE = makeREstring(platform[1] + platform[2])
-    #     emitPlatformExtensionsRE = makeREstring(platform[1])
-    #
-    #     opts = CGeneratorOptions(
-    #         filename          = headername,
-    #         directory         = directory,
-    #         apiname           = 'vulkan',
-    #         profile           = None,
-    #         versions          = featuresPat,
-    #         emitversions      = None,
-    #         defaultExtensions = None,
-    #         addExtensions     = addPlatformExtensionsRE,
-    #         removeExtensions  = None,
-    #         emitExtensions    = emitPlatformExtensionsRE,
-    #         prefixText        = prefixStrings + clPrefixStrings,
-    #         genFuncPointers   = True,
-    #         protectFile       = protectFile,
-    #         protectFeature    = False,
-    #         protectProto      = '#ifndef',
-    #         protectProtoStr   = 'VK_NO_PROTOTYPES',
-    #         apicall           = 'VKAPI_ATTR ',
-    #         apientry          = 'VKAPI_CALL ',
-    #         apientryp         = 'VKAPI_PTR *',
-    #         alignFuncParam    = 0)
-    #
-    #     genOpts[headername] = [ COutputGenerator, opts ]
 
     # Header for core API + extensions.
     # To generate just the core API,
@@ -258,7 +214,8 @@ def makeGenOpts(args):
     # It removes all platform extensions (from the platform headers options
     # constructed above) as well as any explicitly specified removals.
 
-    removeExtensionsPat = makeREstring(allPlatformExtensions + removeExtensions, None)
+    removeExtensionsPat = makeREstring(removeExtensions, None,
+        strings_are_regex=True)
 
     genOpts['cl.h'] = [
           COutputGenerator,
@@ -266,7 +223,8 @@ def makeGenOpts(args):
             conventions       = conventions,
             filename          = 'cl.h',
             directory         = directory,
-            apiname           = 'opencl',
+            genpath           = None,
+            apiname           = defaultAPIName,
             profile           = None,
             versions          = featuresPat,
             emitversions      = featuresPat,
@@ -284,50 +242,49 @@ def makeGenOpts(args):
             apientry          = 'CL_API_CALL ',
             apientryp         = 'CL_API_CALL *',
             alignFuncParam    = 0,
-            genEnumBeginEndRange = False)
+            misracstyle       = misracstyle,
+            misracppstyle     = misracppstyle)
         ]
 
-# Generate a target based on the options in the matching genOpts{} object.
-# This is encapsulated in a function so it can be profiled and/or timed.
-# The args parameter is an parsed argument object containing the following
-# fields that are used:
-#   target - target to generate
-#   directory - directory to generate it in
-#   protect - True if re-inclusion wrappers should be created
-#   extensions - list of additional extensions to include in generated
-#   interfaces
 def genTarget(args):
-    global genOpts
+    """Create an API generator and corresponding generator options based on
+    the requested target and command line options.
 
-    # Create generator options with specified parameters
+    This is encapsulated in a function so it can be profiled and/or timed.
+    The args parameter is an parsed argument object containing the following
+    fields that are used:
+
+    - target - target to generate
+    - directory - directory to generate it in
+    - protect - True if re-inclusion wrappers should be created
+    - extensions - list of additional extensions to include in generated interfaces"""
+
+    # Create generator options with parameters specified on command line
     makeGenOpts(args)
 
-    if args.target in genOpts.keys():
+    # pdb.set_trace()
+
+    # Select a generator matching the requested target
+    if args.target in genOpts:
         createGenerator = genOpts[args.target][0]
         options = genOpts[args.target][1]
 
-        if not args.quiet:
-            write('* Building', options.filename, file=sys.stderr)
-            write('* options.versions          =', options.versions, file=sys.stderr)
-            write('* options.emitversions      =', options.emitversions, file=sys.stderr)
-            write('* options.defaultExtensions =', options.defaultExtensions, file=sys.stderr)
-            write('* options.addExtensions     =', options.addExtensions, file=sys.stderr)
-            write('* options.removeExtensions  =', options.removeExtensions, file=sys.stderr)
-            write('* options.emitExtensions    =', options.emitExtensions, file=sys.stderr)
+        logDiag('* Building', options.filename)
+        logDiag('* options.versions          =', options.versions)
+        logDiag('* options.emitversions      =', options.emitversions)
+        logDiag('* options.defaultExtensions =', options.defaultExtensions)
+        logDiag('* options.addExtensions     =', options.addExtensions)
+        logDiag('* options.removeExtensions  =', options.removeExtensions)
+        logDiag('* options.emitExtensions    =', options.emitExtensions)
 
-        startTimer(args.time)
         gen = createGenerator(errFile=errWarn,
                               warnFile=errWarn,
                               diagFile=diag)
-        reg.setGenerator(gen)
-        reg.apiGen(options)
-
-        if not args.quiet:
-            write('* Generated', options.filename, file=sys.stderr)
-        endTimer(args.time, '* Time to generate ' + options.filename + ' =')
+        return (gen, options)
     else:
-        write('No generator options for unknown target:',
-              args.target, file=sys.stderr)
+        logErr('No generator options for unknown target:', args.target)
+        return None
+
 
 # -feature name
 # -extension name
@@ -336,8 +293,11 @@ def genTarget(args):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
 
+    parser.add_argument('-apiname', action='store',
+                        default=None,
+                        help='Specify API to generate (defaults to repository-specific conventions object value)')
     parser.add_argument('-defaultExtensions', action='store',
-                        default='opencl',
+                        default=APIConventions().xml_api_name,
                         help='Specify a single class of extensions to add to targets')
     parser.add_argument('-extension', action='append',
                         default=[],
@@ -348,6 +308,9 @@ if __name__ == '__main__':
     parser.add_argument('-emitExtensions', action='append',
                         default=[],
                         help='Specify an extension or extensions to emit in targets')
+
+
+
     parser.add_argument('-feature', action='append',
                         default=[],
                         help='Specify a core API feature name or names to add to targets')
@@ -371,7 +334,9 @@ if __name__ == '__main__':
     parser.add_argument('-time', action='store_true',
                         help='Enable timing')
     parser.add_argument('-validate', action='store_true',
-                        help='Enable group validation')
+                        help='Validate the registry properties and exit')
+    parser.add_argument('-genpath', action='store', default='gen',
+                        help='Path to generated files')
     parser.add_argument('-o', action='store', dest='directory',
                         default='.',
                         help='Create target and related files in specified directory')
@@ -381,33 +346,16 @@ if __name__ == '__main__':
                         help='Suppress script output during normal execution.')
     parser.add_argument('-verbose', action='store_false', dest='quiet', default=True,
                         help='Enable script output during normal execution.')
+    parser.add_argument('-misracstyle', dest='misracstyle', action='store_true',
+                        help='generate MISRA C-friendly headers')
+    parser.add_argument('-misracppstyle', dest='misracppstyle', action='store_true',
+                        help='generate MISRA C++-friendly headers')
 
     args = parser.parse_args()
 
     # This splits arguments which are space-separated lists
     args.feature = [name for arg in args.feature for name in arg.split()]
     args.extension = [name for arg in args.extension for name in arg.split()]
-
-    # Load & parse registry
-    reg = Registry()
-
-    startTimer(args.time)
-    tree = etree.parse(args.registry)
-    endTimer(args.time, '* Time to make ElementTree =')
-
-    if args.debug:
-        pdb.run('reg.loadElementTree(tree)')
-    else:
-        startTimer(args.time)
-        reg.loadElementTree(tree)
-        endTimer(args.time, '* Time to parse ElementTree =')
-
-    if args.validate:
-        reg.validateGroups()
-
-    if args.dump:
-        write('* Dumping registry to regdump.txt', file=sys.stderr)
-        reg.dumpReg(filehandle = open('regdump.txt', 'w', encoding='utf-8'))
 
     # create error/warning & diagnostic files
     if args.errfile:
@@ -420,15 +368,38 @@ if __name__ == '__main__':
     else:
         diag = None
 
+    if args.time:
+        # Log diagnostics and warnings
+        setLogFile(setDiag = True, setWarn = True, filename = '-')
+
+    # Create the API generator & generator options
+    (gen, options) = genTarget(args)
+
+    # Create the registry object with the specified generator and generator
+    # options. The options are set before XML loading as they may affect it.
+    reg = Registry(gen, options)
+
+    # Parse the specified registry XML into an ElementTree object
+    startTimer(args.time)
+    tree = etree.parse(args.registry)
+    endTimer(args.time, '* Time to make ElementTree =')
+
+    # Load the XML tree into the registry object
+    startTimer(args.time)
+    reg.loadElementTree(tree)
+    endTimer(args.time, '* Time to parse ElementTree =')
+
+    if args.dump:
+        logDiag('* Dumping registry to regdump.txt')
+        reg.dumpReg(filehandle=open('regdump.txt', 'w', encoding='utf-8'))
+
+    # Finally, use the output generator to create the requested target
     if args.debug:
-        pdb.run('genTarget(args)')
-    elif args.profile:
-        import cProfile, pstats
-        cProfile.run('genTarget(args)', 'profile.txt')
-        p = pstats.Stats('profile.txt')
-        p.strip_dirs().sort_stats('time').print_stats(50)
+        pdb.run('reg.apiGen()')
     else:
-        try:
-            genTarget(args)
-        except:
-            pdb.post_mortem()
+        startTimer(args.time)
+        reg.apiGen()
+        endTimer(args.time, '* Time to generate ' + options.filename + ' =')
+
+    if not args.quiet:
+        logDiag('* Generated', options.filename)
