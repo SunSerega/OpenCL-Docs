@@ -72,7 +72,7 @@ Types = element types {
 #   bitvalues - for a *Flags type, name of an enum definition that
 #       defines the valid values for parameters of that type
 #   category - if present, 'enum' indicates a matching <enums>
-#       block to generate an enumerated type for, and 'struct'
+#       block to generate an enumerated type for, and 'struct'/'function'
 #       causes special interpretation of the contents of the type
 #       tag including ... TBD ...
 #       Other allowed values are 'include', 'define', 'handle' and 'bitmask',
@@ -123,6 +123,9 @@ Types = element types {
 #       noautovalidity - tag stating that no automatic validity language should be generated
 #       values - comma-separated list of legal values, usually used only for sType enums
 #   <comment> - containing arbitrary text (unused)
+# For types with category 'function', contents should be one <proto> and zero or more <param>
+#   <proto> - contains a single <type> tag, indicating return value of function pointer
+#   <param> - like <param> tag in <command>
 #
 # *** There is a problem here: I am not sure how to represent the <type>
 # syntax where it may contain arbitrarily interleaved text, <type>, and
@@ -178,7 +181,18 @@ Type = element type {
                 } +
             } |
             element comment { text }
-        ) *
+        ) * |
+        (
+            element proto {
+                element type { TypeName }
+            } ,
+            element param {
+                mixed {
+                    element type { TypeName } ? ,
+                    element name { text } ?
+                }
+            } *
+        )
     )
 }
 
@@ -237,6 +251,18 @@ Enums = element enums {
 #   comment - descriptive text with no semantic meaning
 #   deprecated - denotes that this enum is deprecated, and why.
 #       Valid values: 'aliased', 'ignored', 'true'.
+#   info_type - the type of value returned by a function,
+#       which accepts this enum, using the only "void*" parameter.
+#       (info_type is only valid when <require> tag has etype="obj info")
+#   input_type - the type of value expected by a function,
+#       which accepts this enum, using the only "const void*" parameter.
+#       (input_type is only valid when <require> tag has etype="obj info")
+#   followed - the type to follow this enum in a property list.
+#       (followed is only valid when <require> tag has etype="property info")
+#   terminate - the name of another enum with followed attribute in the same enum group.
+#       When this attribute is present, the enum with followed attribute denotes a list,
+#       while the enum with terminate attribute denotes terminator of that list. (not always a NULL-terminator)
+#       (terminate is only valid when <require> tag has etype="property info")
 Enum = element enum {
     (
       (
@@ -264,6 +290,14 @@ Enum = element enum {
       attribute type { TypeSuffix } ? &
       attribute name { text } &
       attribute deprecated { text } ? &
+      (
+        (
+          attribute input_type { TypeName } ? &
+          attribute info_type { TypeName } ?
+        ) |
+        attribute followed { TypeName } |
+        attribute terminate { EnumName }
+      ) ? &
       Comment ?
     )
 }
@@ -403,7 +437,7 @@ Command = element command {
 #   <require> / <remove> contains features to require or remove in
 #                        this version
 #     profile - only require/remove when generated profile matches
-#     etype - can be "enum", "bitfield", "constants" or "OpenCL-C only"
+#     etype - can be "enum", "bitfield", "obj info", "property list", "constants" or "OpenCL-C only"
 #               If omited, etype="enum" is assumed
 #     group - type name, dedicated to a select group of enums
 #               Only exists for "enum" and "bitfield" etype's
@@ -461,7 +495,6 @@ Extensions = element extensions {
 #   author - name of the author (usually a company or project name)
 #   contact - contact responsible for the tag (name and contact information)
 #   type - 'device' or 'instance', if present
-#   condition - C preprocessor expression (**TBD**)
 #   depends - boolean expression of API and/or extension names
 #       upon which this extension depends.
 #   supported - comma-separated list of API name(s) supporting this extension,
@@ -485,7 +518,7 @@ Extensions = element extensions {
 # In addition, <require> / <remove> tags also support attributes:
 #     api - only require/remove these features for the matching API.
 #       Not a regular expression.
-#     etype - can be "enum", "bitfield", "constants" or "OpenCL-C only"
+#     etype - can be "enum", "bitfield", "obj info", "property list", "constants" or "OpenCL-C only"
 #               If omited, etype="enum" is assumed
 #     group - type name, dedicated to a select group of enums
 #               Only exists for "enum" and "bitfield" etype's
@@ -501,7 +534,6 @@ Extension = element extension {
     attribute author { text } ? ,
     attribute contact { text } ? ,
     attribute type { text } ? ,
-    attribute condition { text } ? ,
     attribute depends { text } ?,
     attribute supported { StringGroup } ? ,
     attribute ratified { text } ? ,
