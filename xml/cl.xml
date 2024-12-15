@@ -883,7 +883,7 @@ server's OpenCL/api-docs repository.
         <enum bitpos="3"            name="CL_MEM_USE_HOST_PTR"/>
         <enum bitpos="4"            name="CL_MEM_ALLOC_HOST_PTR"/>
         <enum bitpos="5"            name="CL_MEM_COPY_HOST_PTR"/>
-            <unused start="6" comment="reserved"/>
+            <unused start="6" comment="reserved for cl_ext_immutable_memory_objects"/>
         <enum bitpos="7"            name="CL_MEM_HOST_WRITE_ONLY"/>
         <enum bitpos="8"            name="CL_MEM_HOST_READ_ONLY"/>
         <enum bitpos="9"            name="CL_MEM_HOST_NO_ACCESS"/>
@@ -7074,7 +7074,7 @@ server's OpenCL/api-docs repository.
                 <command name="clRetainSemaphoreKHR"/>
             </require>
         </extension>
-        <extension name="cl_khr_external_semaphore" revision="1.0.0" supported="opencl" depends="CL_VERSION_1_2+cl_khr_semaphore" ratified="opencl">
+        <extension name="cl_khr_external_semaphore" revision="1.0.1" supported="opencl" depends="CL_VERSION_1_2+cl_khr_semaphore" ratified="opencl">
             <require>
                 <type name="CL/cl.h"/>
             </require>
@@ -7133,7 +7133,7 @@ server's OpenCL/api-docs repository.
                 <enum name="CL_SEMAPHORE_HANDLE_OPAQUE_WIN32_NAME_KHR"/>
             </require>
         </extension>
-        <extension name="cl_khr_external_memory" revision="1.0.0" supported="opencl" depends="CL_VERSION_3_0" ratified="opencl">
+        <extension name="cl_khr_external_memory" revision="1.0.1" supported="opencl" depends="CL_VERSION_3_0" ratified="opencl">
             <require>
                 <type name="CL/cl.h"/>
             </require>
