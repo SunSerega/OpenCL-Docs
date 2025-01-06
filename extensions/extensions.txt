@@ -41,8 +41,6 @@ include::cl_ext_image_from_buffer.asciidoc[]
 include::cl_ext_image_raw10_raw12.asciidoc[]
 <<<
 include::cl_ext_image_requirements_info.asciidoc[]
-<<<
-include::cl_ext_image_tiling_control.asciidoc[]
 
 // Vendor Extensions
 :leveloffset: 0

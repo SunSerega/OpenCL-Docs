@@ -7512,7 +7512,7 @@ server's OpenCL/api-docs repository.
                 <enum name="CL_UNORM_INT_2_101010_EXT"/>
             </require>
         </extension>
-        <extension name="cl_ext_image_tiling_control" supported="opencl">
+        <extension name="cl_ext_image_tiling_control" revision="0.2.0" depends="CL_VERSION_3_0" supported="opencl">
             <require>
                 <type name="cl_image_tiling_ext"/>
                 <type name="cl_device_image_tiling_capabilities_ext"/>
