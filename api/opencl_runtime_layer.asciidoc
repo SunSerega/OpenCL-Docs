@@ -602,7 +602,7 @@ ifdef::cl_ext_buffer_device_address[]
 
 include::{generated}/api/version-notes/CL_MEM_DEVICE_PRIVATE_ADDRESS_EXT.asciidoc[]
   | {cl_bool_TYPE}
-      | When set to CL_TRUE, specifies that the buffer must have a single fixed
+      | When set to {CL_TRUE}, specifies that the buffer must have a single fixed
       device-side address for its lifetime, and the address can be queried via {clGetMemObjectInfo}.
 
    Each device in the context can have their own (fixed) device-side address and
