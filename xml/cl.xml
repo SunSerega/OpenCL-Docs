@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <registry>
     <comment>
-Copyright 2013-2024 The Khronos Group Inc.
+Copyright 2013-2025 The Khronos Group Inc.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -1399,7 +1399,7 @@ server's OpenCL/api-docs repository.
         <enum bitpos="0"            name="CL_COMMAND_BUFFER_CAPABILITY_KERNEL_PRINTF_KHR"/>
         <enum bitpos="1"            name="CL_COMMAND_BUFFER_CAPABILITY_DEVICE_SIDE_ENQUEUE_KHR"/>
         <enum bitpos="2"            name="CL_COMMAND_BUFFER_CAPABILITY_SIMULTANEOUS_USE_KHR"/>
-        <enum bitpos="3"            name="CL_COMMAND_BUFFER_CAPABILITY_OUT_OF_ORDER_KHR"/>
+            <unused start="3" end="3" comment="Available for future use"/>
         <enum bitpos="4"            name="CL_COMMAND_BUFFER_CAPABILITY_MULTIPLE_QUEUE_KHR"/>
             <unused start="5" end="6" comment="Used by future command-buffer extensions"/>
             <unused start="6" end="31"/>
@@ -1849,7 +1849,8 @@ server's OpenCL/api-docs repository.
         <enum value="0x1297"             name="CL_COMMAND_BUFFER_STATE_KHR"/>
         <enum value="0x1298"             name="CL_COMMAND_BUFFER_PROPERTIES_ARRAY_KHR"/>
         <enum value="0x1299"             name="CL_COMMAND_BUFFER_CONTEXT_KHR"/>
-            <unused start="0x129A" end="0x129F" comment="Available to use"/>
+        <enum value="0x129A"             name="CL_DEVICE_COMMAND_BUFFER_SUPPORTED_QUEUE_PROPERTIES_KHR"/>
+            <unused start="0x129B" end="0x129F" comment="Available to use"/>
         <enum value="0x12A0"             name="CL_MUTABLE_COMMAND_COMMAND_QUEUE_KHR"/>
         <enum value="0x12A1"             name="CL_MUTABLE_COMMAND_COMMAND_BUFFER_KHR"/>
         <enum value="0x12A2"             name="CL_MUTABLE_COMMAND_PROPERTIES_ARRAY_KHR"/>
@@ -2375,8 +2376,12 @@ server's OpenCL/api-docs repository.
             <unused start="0x4290" end="0x429F"/>
     </enums>
 
-    <enums start="0x42A0" end="0x4FFF" name="enums.42A0" comment="Reserved for vendor extensions. Allocate in groups of 16.">
-            <unused start="0x42A0" end="0x4FFF"/>
+    <enums start="0x42A0" end="0x42AF" name="enums.42A0" vendor="Mastiṣka AI">
+            <unused start="0x42A0" end="0x42AF"/>
+    </enums>
+
+    <enums start="0x42B0" end="0x4FFF" name="enums.42B0" comment="Reserved for vendor extensions. Allocate in groups of 16.">
+            <unused start="0x42B0" end="0x4FFF"/>
     </enums>
 
     <enums start="0x10000" end="0x10FFF" name="enums.10000" vendor="Khronos" comment="Experimental range for internal development only. Do not allocate.">
@@ -7317,7 +7322,7 @@ server's OpenCL/api-docs repository.
                 <command name="clSetContentSizeBufferPoCL"/>
             </require>
         </extension>
-        <extension name="cl_khr_command_buffer" revision="0.9.5" supported="opencl" depends="CL_VERSION_1_2" ratified="opencl" provisional="true">
+        <extension name="cl_khr_command_buffer" revision="0.9.7" supported="opencl" depends="CL_VERSION_1_2" ratified="opencl" provisional="true">
             <require>
                 <type name="CL/cl.h"/>
             </require>
@@ -7334,13 +7339,13 @@ server's OpenCL/api-docs repository.
             </require>
             <require group="cl_device_info" etype="obj info">
                 <enum name="CL_DEVICE_COMMAND_BUFFER_CAPABILITIES_KHR" info_type="cl_device_command_buffer_capabilities_khr"/>
+                <enum name="CL_DEVICE_COMMAND_BUFFER_SUPPORTED_QUEUE_PROPERTIES_KHR" info_type="cl_command_queue_properties"/>
                 <enum name="CL_DEVICE_COMMAND_BUFFER_REQUIRED_QUEUE_PROPERTIES_KHR" info_type="cl_command_queue_properties"/>
             </require>
             <require group="cl_device_command_buffer_capabilities_khr" etype="bitfield">
                 <enum name="CL_COMMAND_BUFFER_CAPABILITY_KERNEL_PRINTF_KHR"/>
                 <enum name="CL_COMMAND_BUFFER_CAPABILITY_DEVICE_SIDE_ENQUEUE_KHR"/>
                 <enum name="CL_COMMAND_BUFFER_CAPABILITY_SIMULTANEOUS_USE_KHR"/>
-                <enum name="CL_COMMAND_BUFFER_CAPABILITY_OUT_OF_ORDER_KHR"/>
             </require>
             <require group="cl_command_buffer_properties_khr" etype="property list">
                <enum name="CL_COMMAND_BUFFER_FLAGS_KHR" followed="cl_command_buffer_flags_khr"/>
@@ -7535,7 +7540,7 @@ server's OpenCL/api-docs repository.
                 <enum name="CL_MEM_DEVICE_ID_INTEL" followed="void*"/>
             </require>
         </extension>
-        <extension name="cl_khr_command_buffer_multi_device" revision="0.9.1" supported="opencl" depends="cl_khr_command_buffer" ratified="opencl" provisional="true" comment="in sync with version 0.9.1; requires cl_khr_command_buffer 0.9.3 or later">
+        <extension name="cl_khr_command_buffer_multi_device" revision="0.9.2" supported="opencl" depends="cl_khr_command_buffer" ratified="opencl" provisional="true" comment="requires cl_khr_command_buffer 0.9.7 or later">
             <require>
                 <type name="CL/cl.h"/>
             </require>
