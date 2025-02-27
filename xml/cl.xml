@@ -256,6 +256,7 @@ server's OpenCL/api-docs repository.
         <type category="define">typedef <type>cl_bitfield</type>      <name>cl_platform_command_buffer_capabilities_khr</name>;</type>
         <type category="define">typedef <type>cl_bitfield</type>      <name>cl_mutable_dispatch_asserts_khr</name></type>
         <type category="define">typedef <type>cl_bitfield</type>      <name>cl_device_kernel_clock_capabilities_khr</name>;</type>
+        <type category="define">typedef <type>cl_ulong</type>      <name>cl_mem_device_address_ext</name>;</type>
         <type category="define">typedef <type>cl_uint</type>          <name>cl_affinity_domain_ext</name>;</type>
         <type category="define">typedef <type>cl_uint</type>          <name>cl_command_termination_reason_arm</name>;</type>
         <type category="define">typedef <type>cl_uint</type>          <name>cl_host_cache_policy</name>;</type>
@@ -2384,6 +2385,12 @@ server's OpenCL/api-docs repository.
             <unused start="0x42B0" end="0x4FFF"/>
     </enums>
 
+    <enums start="0x5000" end="0x500F" name="enums.5000" comment="For cl_ext_buffer_device_address">
+        <enum value="0x5000"        name="CL_MEM_DEVICE_PRIVATE_ADDRESS_EXT"/>
+        <enum value="0x5001"        name="CL_MEM_DEVICE_ADDRESS_EXT"/>
+        <enum value="0x5002"        name="CL_KERNEL_EXEC_INFO_DEVICE_PTRS_EXT"/>
+    </enums>
+
     <enums start="0x10000" end="0x10FFF" name="enums.10000" vendor="Khronos" comment="Experimental range for internal development only. Do not allocate.">
         <!-- Khronos will never assign values in this range, and vendors
              should never ship using values in this range. It is intended
@@ -3798,6 +3805,12 @@ server's OpenCL/api-docs repository.
             <param><type>cl_kernel</type>                               <name>kernel</name></param>
             <param><type>cl_uint</type>                                 <name>arg_index</name></param>
             <param>const <type>void</type>*                             <name>arg_value</name></param>
+        </command>
+        <command suffix="CL_API_SUFFIX__VERSION_3_0">
+            <proto><type>cl_error_code</type>                           <name>clSetKernelArgDevicePointerEXT</name></proto>
+            <param><type>cl_kernel</type>                               <name>kernel</name></param>
+            <param><type>cl_uint</type>                                 <name>arg_index</name></param>
+            <param><type>cl_mem_device_address_ext</type>               <name>arg_value</name></param>
         </command>
         <command suffix="CL_API_SUFFIX__VERSION_2_0">
             <proto><type>cl_error_code</type>                           <name>clSetKernelExecInfo</name></proto>
@@ -7320,6 +7333,23 @@ server's OpenCL/api-docs repository.
         <extension name="cl_pocl_content_size" revision="0.0.0" supported="opencl">
             <require>
                 <command name="clSetContentSizeBufferPoCL"/>
+            </require>
+        </extension>
+        <extension name="cl_ext_buffer_device_address" revision="1.0.2" supported="opencl" depends="CL_VERSION_3_0">
+            <require>
+                <type name="cl_mem_device_address_ext"/>
+            </require>
+            <require>
+                <command name="clSetKernelArgDevicePointerEXT"/>
+            </require>
+            <require group="cl_mem_properties" etype="property list">
+                <enum name="CL_MEM_DEVICE_PRIVATE_ADDRESS_EXT" followed="cl_bool"/>
+            </require>
+            <require group="cl_mem_info" etype="obj info">
+                <enum name="CL_MEM_DEVICE_ADDRESS_EXT" info_type="cl_mem_device_address_ext"/>
+            </require>
+            <require group="cl_kernel_exec_info" etype="obj info">
+                <enum name="CL_KERNEL_EXEC_INFO_DEVICE_PTRS_EXT" input_type="cl_mem_device_address_ext"/>
             </require>
         </extension>
         <extension name="cl_khr_command_buffer" revision="0.9.7" supported="opencl" depends="CL_VERSION_1_2" ratified="opencl" provisional="true">
