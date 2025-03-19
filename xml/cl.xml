@@ -7878,7 +7878,7 @@ server's OpenCL/api-docs repository.
             <require group="cl_kernel_exec_info" etype="obj info">
                 <enum name="CL_KERNEL_EXEC_INFO_SVM_INDIRECT_ACCESS_KHR" input_type="cl_bool"/>
             </require>
-            <require group="cl_svm_capabilities_khr" etype="bitfield" comment="SVM type convenience macros">
+            <require comment="SVM type convenience macros">
                 <type name="CL_SVM_TYPE_MACRO_COARSE_GRAIN_BUFFER_KHR"/>
                 <type name="CL_SVM_TYPE_MACRO_FINE_GRAIN_BUFFER_KHR"/>
                 <type name="CL_SVM_TYPE_MACRO_DEVICE_KHR"/>
