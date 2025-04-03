@@ -384,6 +384,12 @@ channel data types.
 | *UnormInt101010_2*
 | {CL_UNORM_INT_101010_2}
 
+ifdef::cl_ext_image_unsigned_10x6_12x4_14x2[]
+| 17
+| *UnormInt10X6EXT*
+| {CL_UNORM_INT10X6_EXT}
+endif::cl_ext_image_unsigned_10x6_12x4_14x2[]
+
 ifdef::cl_ext_image_unorm_int_2_101010[]
 | 21
 | *UnormInt2_101010EXT*
@@ -404,14 +410,10 @@ ifdef::cl_ext_image_unsigned_10x6_12x4_14x2[]
 | {CL_UNSIGNED_INT14X2_EXT}
 
 | 25
-| *UnormInt10X6EXT*
-| {CL_UNORM_INT10X6_EXT}
-
-| 26
 | *UnormInt12X4EXT*
 | {CL_UNORM_INT12X4_EXT}
 
-| 27
+| 26
 | *UnormInt14X2EXT*
 | {CL_UNORM_INT14X2_EXT}
 endif::cl_ext_image_unsigned_10x6_12x4_14x2[]
