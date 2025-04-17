@@ -256,7 +256,8 @@ server's OpenCL/api-docs repository.
         <type category="define">typedef <type>cl_bitfield</type>      <name>cl_platform_command_buffer_capabilities_khr</name>;</type>
         <type category="define">typedef <type>cl_bitfield</type>      <name>cl_mutable_dispatch_asserts_khr</name></type>
         <type category="define">typedef <type>cl_bitfield</type>      <name>cl_device_kernel_clock_capabilities_khr</name>;</type>
-        <type category="define">typedef <type>cl_ulong</type>      <name>cl_mem_device_address_ext</name>;</type>
+        <type category="define">typedef <type>cl_ulong</type>         <name>cl_mem_device_address_ext</name>;</type>
+        <type category="define">typedef <type>cl_uint</type>          <name>cl_perf_hint_qcom</name>;</type>
         <type category="define">typedef <type>cl_uint</type>          <name>cl_affinity_domain_ext</name>;</type>
         <type category="define">typedef <type>cl_uint</type>          <name>cl_command_termination_reason_arm</name>;</type>
         <type category="define">typedef <type>cl_uint</type>          <name>cl_host_cache_policy</name>;</type>
@@ -2175,7 +2176,11 @@ server's OpenCL/api-docs repository.
     </enums>
 
     <enums start="0x40C0" end="0x40CF" name="enums.40C0" vendor="Qualcomm" comment="Per Bug 10726">
-            <unused start="0x40C0" end="0x40C5"/>
+            <unused start="0x40C0" end="0x40C1"/>
+        <enum value="0x40C2"        name="CL_CONTEXT_PERF_HINT_QCOM"/>
+        <enum value="0x40C3"        name="CL_PERF_HINT_HIGH_QCOM"/>
+        <enum value="0x40C4"        name="CL_PERF_HINT_NORMAL_QCOM"/>
+        <enum value="0x40C5"        name="CL_PERF_HINT_LOW_QCOM"/>
         <enum value="0x40C6"        name="CL_MEM_ANDROID_NATIVE_BUFFER_HOST_PTR_QCOM"/>
             <unused start="0x40C7" end="0x40CF"/>
     </enums>
@@ -4440,6 +4445,11 @@ server's OpenCL/api-docs repository.
             <proto><type>cl_error_code</type>                           <name>clCancelCommandsIMG</name></proto>
             <param>const <type>cl_event</type>*                         <name>event_list</name></param>
             <param><type>size_t</type>                                  <name>num_events_in_list</name></param>
+        </command>
+        <command>
+            <proto><type>cl_error_code</type>                           <name>clSetPerfHintQCOM</name></proto>
+            <param><type>cl_context</type>                              <name>context</name></param>
+            <param><type>cl_perf_hint_qcom</type>                       <name>perf_hint</name></param>
         </command>
     </commands>
 
@@ -7688,6 +7698,25 @@ server's OpenCL/api-docs repository.
         <extension name="cl_ext_immutable_memory_objects" revision="1.0.0" depends="CL_VERSION_1_2" supported="opencl">
             <require group="cl_mem_flags" etype="bitfield">
                 <enum name="CL_MEM_IMMUTABLE_EXT"/>
+            </require>
+        </extension>
+        <extension name="cl_qcom_perf_hint" revision="1.0.5" supported="opencl">
+            <require>
+                <type name="CL/cl.h"/>
+            </require>
+            <require>
+                <type name="cl_perf_hint_qcom"/>
+            </require>
+            <require group="cl_perf_hint_qcom">
+                <enum name="CL_PERF_HINT_HIGH_QCOM"/>
+                <enum name="CL_PERF_HINT_NORMAL_QCOM"/>
+                <enum name="CL_PERF_HINT_LOW_QCOM"/>
+            </require>
+            <require group="cl_context_info" etype="obj info">
+                <enum name="CL_CONTEXT_PERF_HINT_QCOM" info_type="cl_perf_hint_qcom"/>
+            </require>
+            <require>
+                <command name="clSetPerfHintQCOM"/>
             </require>
         </extension>
     </extensions>
