@@ -5765,7 +5765,7 @@ server's OpenCL/api-docs repository.
             </require>
             <require group="cl_platform_info" etype="obj info">
                 <enum name="CL_PLATFORM_ICD_SUFFIX_KHR" info_type="char[]"/>
-                <enum name="CL_PLATFORM_UNLOADABLE_KHR"/>
+                <enum name="CL_PLATFORM_UNLOADABLE_KHR" info_type="cl_bool"/>
             </require>
             <require group="cl_error_code">
                 <enum name="CL_PLATFORM_NOT_FOUND_KHR"/>
