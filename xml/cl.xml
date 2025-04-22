@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <registry>
     <comment>
-Copyright 2013-2024 The Khronos Group Inc.
+Copyright 2013-2025 The Khronos Group Inc.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -256,6 +256,8 @@ server's OpenCL/api-docs repository.
         <type category="define">typedef <type>cl_bitfield</type>      <name>cl_platform_command_buffer_capabilities_khr</name>;</type>
         <type category="define">typedef <type>cl_bitfield</type>      <name>cl_mutable_dispatch_asserts_khr</name></type>
         <type category="define">typedef <type>cl_bitfield</type>      <name>cl_device_kernel_clock_capabilities_khr</name>;</type>
+        <type category="define">typedef <type>cl_ulong</type>         <name>cl_mem_device_address_ext</name>;</type>
+        <type category="define">typedef <type>cl_uint</type>          <name>cl_perf_hint_qcom</name>;</type>
         <type category="define">typedef <type>cl_uint</type>          <name>cl_image_tiling_ext</name>;</type>
         <type category="define">typedef <type>cl_bitfield</type>      <name>cl_device_image_tiling_capabilities_ext</name>;</type>
         <type category="define">typedef <type>cl_uint</type>          <name>cl_affinity_domain_ext</name>;</type>
@@ -396,6 +398,14 @@ server's OpenCL/api-docs repository.
             <member>const <type>size_t</type>*                             <name>global_work_offset</name></member>
             <member>const <type>size_t</type>*                             <name>global_work_size</name></member>
             <member>const <type>size_t</type>*                             <name>local_work_size</name></member>
+        </type>
+
+        <type category="define" requires="stdint" name="CL_ICD2_TAG_KHR" comment="ICD 2 tag, in cl_ext.h">
+#if INTPTR_MAX == INT32_MAX
+#define CL_ICD2_TAG_KHR ((intptr_t)0x434C3331)
+#else
+#define CL_ICD2_TAG_KHR ((intptr_t)0x4F50454E434C3331)
+#endif
         </type>
         
         <type category="function" name="cl_enqueue_svm_free_callback">
@@ -953,7 +963,7 @@ server's OpenCL/api-docs repository.
         <enum bitpos="3"            name="CL_MEM_USE_HOST_PTR"/>
         <enum bitpos="4"            name="CL_MEM_ALLOC_HOST_PTR"/>
         <enum bitpos="5"            name="CL_MEM_COPY_HOST_PTR"/>
-            <unused start="6" comment="reserved for cl_ext_immutable_memory_objects"/>
+        <enum bitpos="6"            name="CL_MEM_IMMUTABLE_EXT"/>
         <enum bitpos="7"            name="CL_MEM_HOST_WRITE_ONLY"/>
         <enum bitpos="8"            name="CL_MEM_HOST_READ_ONLY"/>
         <enum bitpos="9"            name="CL_MEM_HOST_NO_ACCESS"/>
@@ -2179,7 +2189,11 @@ server's OpenCL/api-docs repository.
     </enums>
 
     <enums start="0x40C0" end="0x40CF" name="enums.40C0" vendor="Qualcomm" comment="Per Bug 10726">
-            <unused start="0x40C0" end="0x40C5"/>
+            <unused start="0x40C0" end="0x40C1"/>
+        <enum value="0x40C2"        name="CL_CONTEXT_PERF_HINT_QCOM"/>
+        <enum value="0x40C3"        name="CL_PERF_HINT_HIGH_QCOM"/>
+        <enum value="0x40C4"        name="CL_PERF_HINT_NORMAL_QCOM"/>
+        <enum value="0x40C5"        name="CL_PERF_HINT_LOW_QCOM"/>
         <enum value="0x40C6"        name="CL_MEM_ANDROID_NATIVE_BUFFER_HOST_PTR_QCOM"/>
             <unused start="0x40C7" end="0x40CF"/>
     </enums>
@@ -2397,6 +2411,12 @@ server's OpenCL/api-docs repository.
 
     <enums start="0x42B0" end="0x4FFF" name="enums.42B0" comment="Reserved for vendor extensions. Allocate in groups of 16.">
             <unused start="0x42B0" end="0x4FFF"/>
+    </enums>
+
+    <enums start="0x5000" end="0x500F" name="enums.5000" comment="For cl_ext_buffer_device_address">
+        <enum value="0x5000"        name="CL_MEM_DEVICE_PRIVATE_ADDRESS_EXT"/>
+        <enum value="0x5001"        name="CL_MEM_DEVICE_ADDRESS_EXT"/>
+        <enum value="0x5002"        name="CL_KERNEL_EXEC_INFO_DEVICE_PTRS_EXT"/>
     </enums>
 
     <enums start="0x10000" end="0x10FFF" name="enums.10000" vendor="Khronos" comment="Experimental range for internal development only. Do not allocate.">
@@ -2649,6 +2669,16 @@ server's OpenCL/api-docs repository.
             <param><type>cl_uint</type>                    <name>num_entries</name></param>
             <param><type>cl_platform_id</type>*            <name>platforms</name></param>
             <param><type>cl_uint</type>*                   <name>num_platforms</name></param>
+        </command>
+        <command>
+            <proto><type>void</type>*                      <name>clIcdGetFunctionAddressForPlatformKHR</name></proto>
+            <param><type>cl_platform_id</type>             <name>platform</name></param>
+            <param>const <type>char</type>*                <name>func_name</name></param>
+        </command>
+        <command>
+            <proto><type>cl_error_code</type>              <name>clIcdSetPlatformDispatchDataKHR</name></proto>
+            <param><type>cl_platform_id</type>             <name>platform</name></param>
+            <param><type>void</type>*                      <name>dispatch_data</name></param>
         </command>
         <command suffix="CL_API_SUFFIX__VERSION_1_2">
             <proto><type>cl_program</type>                 <name>clCreateProgramWithILKHR</name></proto>
@@ -3814,6 +3844,12 @@ server's OpenCL/api-docs repository.
             <param><type>cl_uint</type>                                 <name>arg_index</name></param>
             <param>const <type>void</type>*                             <name>arg_value</name></param>
         </command>
+        <command suffix="CL_API_SUFFIX__VERSION_3_0">
+            <proto><type>cl_error_code</type>                           <name>clSetKernelArgDevicePointerEXT</name></proto>
+            <param><type>cl_kernel</type>                               <name>kernel</name></param>
+            <param><type>cl_uint</type>                                 <name>arg_index</name></param>
+            <param><type>cl_mem_device_address_ext</type>               <name>arg_value</name></param>
+        </command>
         <command suffix="CL_API_SUFFIX__VERSION_2_0">
             <proto><type>cl_error_code</type>                           <name>clSetKernelExecInfo</name></proto>
             <param><type>cl_kernel</type>                               <name>kernel</name></param>
@@ -4424,6 +4460,11 @@ server's OpenCL/api-docs repository.
             <proto><type>cl_error_code</type>                           <name>clCancelCommandsIMG</name></proto>
             <param>const <type>cl_event</type>*                         <name>event_list</name></param>
             <param><type>size_t</type>                                  <name>num_events_in_list</name></param>
+        </command>
+        <command>
+            <proto><type>cl_error_code</type>                           <name>clSetPerfHintQCOM</name></proto>
+            <param><type>cl_context</type>                              <name>context</name></param>
+            <param><type>cl_perf_hint_qcom</type>                       <name>perf_hint</name></param>
         </command>
     </commands>
 
@@ -5728,7 +5769,7 @@ server's OpenCL/api-docs repository.
                 <command name="clLogMessagesToStderrAPPLE"/>
             </require>
         </extension>
-        <extension name="cl_khr_icd" revision="1.0.0" supported="opencl" ratified="opencl">
+        <extension name="cl_khr_icd" revision="2.0.0" supported="opencl" ratified="opencl">
             <require>
                 <type name="CL/cl.h"/>
             </require>
@@ -5738,8 +5779,13 @@ server's OpenCL/api-docs repository.
             <require group="cl_error_code">
                 <enum name="CL_PLATFORM_NOT_FOUND_KHR"/>
             </require>
+            <require comment="ICD 2 tag value">
+                <type name="CL_ICD2_TAG_KHR"/>
+            </require>
             <require>
                 <command name="clIcdGetPlatformIDsKHR"/>
+                <command name="clIcdGetFunctionAddressForPlatformKHR"/>
+                <command name="clIcdSetPlatformDispatchDataKHR"/>
             </require>
         </extension>
         <extension name="cl_loader_layers" revision="1.0.0" supported="opencl">
@@ -7337,7 +7383,24 @@ server's OpenCL/api-docs repository.
                 <command name="clSetContentSizeBufferPoCL"/>
             </require>
         </extension>
-        <extension name="cl_khr_command_buffer" revision="0.9.6" supported="opencl" depends="CL_VERSION_1_2" ratified="opencl" provisional="true">
+        <extension name="cl_ext_buffer_device_address" revision="1.0.2" supported="opencl" depends="CL_VERSION_3_0">
+            <require>
+                <type name="cl_mem_device_address_ext"/>
+            </require>
+            <require>
+                <command name="clSetKernelArgDevicePointerEXT"/>
+            </require>
+            <require group="cl_mem_properties" etype="property list">
+                <enum name="CL_MEM_DEVICE_PRIVATE_ADDRESS_EXT" followed="cl_bool"/>
+            </require>
+            <require group="cl_mem_info" etype="obj info">
+                <enum name="CL_MEM_DEVICE_ADDRESS_EXT" info_type="cl_mem_device_address_ext"/>
+            </require>
+            <require group="cl_kernel_exec_info" etype="obj info">
+                <enum name="CL_KERNEL_EXEC_INFO_DEVICE_PTRS_EXT" input_type="cl_mem_device_address_ext"/>
+            </require>
+        </extension>
+        <extension name="cl_khr_command_buffer" revision="0.9.7" supported="opencl" depends="CL_VERSION_1_2" ratified="opencl" provisional="true">
             <require>
                 <type name="CL/cl.h"/>
             </require>
@@ -7555,7 +7618,7 @@ server's OpenCL/api-docs repository.
                 <enum name="CL_MEM_DEVICE_ID_INTEL" followed="void*"/>
             </require>
         </extension>
-        <extension name="cl_khr_command_buffer_multi_device" revision="0.9.1" supported="opencl" depends="cl_khr_command_buffer" ratified="opencl" provisional="true" comment="in sync with version 0.9.1; requires cl_khr_command_buffer 0.9.3 or later">
+        <extension name="cl_khr_command_buffer_multi_device" revision="0.9.2" supported="opencl" depends="cl_khr_command_buffer" ratified="opencl" provisional="true" comment="requires cl_khr_command_buffer 0.9.7 or later">
             <require>
                 <type name="CL/cl.h"/>
             </require>
@@ -7640,6 +7703,25 @@ server's OpenCL/api-docs repository.
                 <enum name="CL_DEVICE_KERNEL_CLOCK_SCOPE_DEVICE_KHR"/>
                 <enum name="CL_DEVICE_KERNEL_CLOCK_SCOPE_WORK_GROUP_KHR"/>
                 <enum name="CL_DEVICE_KERNEL_CLOCK_SCOPE_SUB_GROUP_KHR"/>
+            </require>
+        </extension>
+        <extension name="cl_qcom_perf_hint" revision="1.0.5" supported="opencl">
+            <require>
+                <type name="CL/cl.h"/>
+            </require>
+            <require>
+                <type name="cl_perf_hint_qcom"/>
+            </require>
+            <require group="cl_perf_hint_qcom">
+                <enum name="CL_PERF_HINT_HIGH_QCOM"/>
+                <enum name="CL_PERF_HINT_NORMAL_QCOM"/>
+                <enum name="CL_PERF_HINT_LOW_QCOM"/>
+            </require>
+            <require group="cl_context_info" etype="obj info">
+                <enum name="CL_CONTEXT_PERF_HINT_QCOM" info_type="cl_perf_hint_qcom"/>
+            </require>
+            <require>
+                <command name="clSetPerfHintQCOM"/>
             </require>
         </extension>
         <extension name="cl_ext_image_unorm_int_2_101010" revision="1.0.0" depends="CL_VERSION_1_2" supported="opencl">
