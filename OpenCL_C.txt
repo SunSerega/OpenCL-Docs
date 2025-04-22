@@ -1,4 +1,4 @@
-// Copyright 2017-2024 The Khronos Group.
+// Copyright 2017-2025 The Khronos Group.
 // SPDX-License-Identifier: CC-BY-4.0
 
 // Extensions to enable
@@ -376,10 +376,8 @@ ifdef::cl_khr_fp16[]
 [[cl_khr_fp16,cl_khr_fp16]]
 ==== Half-Precision Floating-Point
 
-The {cl_khr_fp16_EXT} extension was promoted to OpenCL C 1.2 as an optional
-feature, and to OpenCL 3.0 as the optional {cl_khr_fp16_EXT} feature.
-The extension provides 16-bit precision scalar and vector floating-point
-data types and extends many functions to accept these types.
+The {cl_khr_fp16_EXT} extension provides 16-bit half-precision scalar and vector
+floating-point data types and extends many functions to accept these types.
 endif::cl_khr_fp16[]
 
 
@@ -388,9 +386,9 @@ ifdef::cl_khr_fp64[]
 ==== Double-Precision Floating-Point
 
 The {cl_khr_fp64_EXT} extension was promoted to OpenCL C 1.2 as an optional
-feature, and to OpenCL 3.0 as the optional {cl_khr_fp64_EXT} feature.
-The extension provides double-precision scalar and vector floating-point
-data types and extends many functions to accept these types.
+feature.
+It provides double-precision scalar and vector floating-point data types and
+extends many functions to accept these types.
 endif::cl_khr_fp64[]
 
 
@@ -1688,11 +1686,16 @@ convert_destType(sourceType)
 
 suite of functions.
 These provide a full set of type conversions between supported
-<<built-in-scalar-data-types,scalar>>,
-<<built-in-vector-data-types,vector>>, and
-<<other-built-in-data-types,other>> data types except for the following
-types: `bool`, `half`, `size_t`, `ptrdiff_t`, `intptr_t`, `uintptr_t`, and
-`void`.
+<<built-in-scalar-data-types,scalar>> and
+<<built-in-vector-data-types,vector>> data types:
+
+* `char`, `char__n__`, `uchar`, `uchar__n__`
+* `short`, `short__n__`, `ushort`, `ushort__n__`
+* `int`, `int__n__`, `uint`, `uint__n__`
+* `long` footnote:[{fn-int64-supported}], `long__n__`, `ulong`, `ulong__n__`
+* `float`, `float__n__`
+* `half` footnote:[{fn-half-supported}], `half__n__`
+* `double` footnote:[{fn-double-supported}], `double__n__`
 
 The number of elements in the source and destination vectors must match.
 
@@ -3336,7 +3339,7 @@ constant int *cp;
 
 int *p;
 gp = (global int *)lp;  // illegal to cast between named address spaces
-p = (int *)lp;          // legal to cast from global to generic
+p = (int *)gp;          // legal to cast from global to generic
 gp = (global int*)p;    // legal to cast from generic to global
 ----------
 
@@ -5368,6 +5371,7 @@ endif::cl_khr_fp16[]
   double__n__ *ldexp*(double__n__ _x_, int__n__ _k_) +
   double__n__ *ldexp*(double__n__ _x_, int _k_) +
   double *ldexp*(double _x_, int _k_)
+
 ifdef::cl_khr_fp16[]
   half__n__ *ldexp*(half__n__ _x_, int__n__ _k_) +
   half__n__ *ldexp*(half__n__ _x_, int _k_) +
@@ -6484,11 +6488,10 @@ ifdef::cl_khr_fp16[gentypeh *min*(gentypeh _x_, half _y_)]
 ifdef::cl_khr_fp16[gentypeh *mix*(gentypeh _x_, gentypeh _y_, half _a_)]
    a| Returns the linear blend of _x_ and _y_ implemented as:
 
-      _x_ + (_y_ - _x_) * _a_
+_x_ + (_y_ - _x_) * _a_
 
-      _a_ must be a value in the range [0.0, 1.0].
-      If _a_ is not in the range [0.0, 1.0], the return values are
-      undefined.
+_a_ must be a value in the range [0.0, 1.0]. If _a_ is not in the range [0.0,
+1.0], the return values are undefined.
 
 ifdef::cl_khr_fp16[]
 NOTE: The half-precision *mix* function can be implemented using
@@ -15950,11 +15953,13 @@ requires>> support for OpenCL C 2.0 or newer.
 
 | 1.0 / _x_
     | {leq} 2.5 ulp for _x_ in the domain of 2^-126^ to 2^126^ for the full
-      profile, and {leq} 3 ulp for the embedded profile.
+      profile, and {leq} 3 ulp for _x_ in the domain of 2^-126^ to 2^126^ for
+      the embedded profile.
 
 | _x_ / _y_
     | {leq} 2.5 ulp for _x_ in the domain of 2^-62^ to 2^62^ and _y_ in the
-      domain of 2^-62^ to 2^62^ for the full profile, and {leq} 3 ulp for
+      domain of 2^-62^ to 2^62^ for the full profile, and {leq} 3 ulp for _x_ in
+      the domain of 2^-62^ to 2^62^ and _y_ in the domain of 2^-62^ to 2^62^ for
       the embedded profile.
 
 | *acos*(_x_)
@@ -16022,11 +16027,11 @@ requires>> support for OpenCL C 2.0 or newer.
 
 | *exp*(_x_)
     | {leq} 3 + *floor*(*fabs*(2 * _x_)) ulp for the full profile, and {leq}
-      4 ulp for the embedded profile.
+      4 + *floor*(*fabs*(2 * _x_)) ulp for the embedded profile.
 
 | *exp2*(_x_)
     | {leq} 3 + *floor*(*fabs*(2 * _x_)) ulp for the full profile, and {leq}
-      4 ulp for the embedded profile.
+      4 + *floor*(*fabs*(2 * _x_)) ulp for the embedded profile.
 
 | *exp10*(_x_)
     | Derived implementations may implement as *exp2*(_x_ * *log2*(10)).
@@ -16288,8 +16293,8 @@ is the infinitely precise result.
 | *_x_ + _y_*   | Correctly rounded             | Correctly rounded
 | *_x_ - _y_*   | Correctly rounded             | Correctly rounded
 | *_x_ * _y_*   | Correctly rounded             | Correctly rounded
-| *1.0 / _x_*   | Correctly rounded             | \<= 1 ulp
-| *_x_ / _y_*   | Correctly rounded             | \<= 1 ulp
+| *1.0 / _x_*   | \<= 1 ulp                     | \<= 1 ulp
+| *_x_ / _y_*   | \<= 1 ulp                     | \<= 1 ulp
 | | |
 | *acos*        | \<= 2 ulp                     | \<= 3 ulp
 | *acosh*       | \<= 2 ulp                     | \<= 3 ulp
@@ -17385,12 +17390,14 @@ channel data type of {CL_FLOAT}.
 === Conversion Rules for Signed and Unsigned 8-Bit, 16-Bit and 32-Bit Integer Channel Data Types
 
 Calls to *read_imagei* with channel data type values of {CL_SIGNED_INT8},
-{CL_SIGNED_INT16} and {CL_SIGNED_INT32} return the unmodified integer values
-stored in the image at specified location.
+{CL_SIGNED_INT16} and {CL_SIGNED_INT32} return the integer values
+stored in the image at specified location, after sign extension to 32 bits for
+integer values smaller than 32 bits.
 
 Calls to *read_imageui* with channel data type values of {CL_UNSIGNED_INT8},
-{CL_UNSIGNED_INT16} and {CL_UNSIGNED_INT32} return the unmodified integer
-values stored in the image at specified location.
+{CL_UNSIGNED_INT16} and {CL_UNSIGNED_INT32} return the integer values stored in
+the image at specified location, after zero extension to 32 bits for integer
+values smaller than 32 bits.
 
 Calls to *write_imagei* will perform one of the following conversions:
 
