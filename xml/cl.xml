@@ -7705,6 +7705,16 @@ server's OpenCL/api-docs repository.
                 <enum name="CL_DEVICE_KERNEL_CLOCK_SCOPE_SUB_GROUP_KHR"/>
             </require>
         </extension>
+        <extension name="cl_ext_image_unorm_int_2_101010" revision="1.0.0" depends="CL_VERSION_1_2" supported="opencl">
+            <require group="cl_channel_type">
+                <enum name="CL_UNORM_INT_2_101010_EXT"/>
+            </require>
+        </extension>
+        <extension name="cl_ext_immutable_memory_objects" revision="1.0.0" depends="CL_VERSION_1_2" supported="opencl">
+            <require group="cl_mem_flags" etype="bitfield">
+                <enum name="CL_MEM_IMMUTABLE_EXT"/>
+            </require>
+        </extension>
         <extension name="cl_qcom_perf_hint" revision="1.0.5" supported="opencl">
             <require>
                 <type name="CL/cl.h"/>
@@ -7722,11 +7732,6 @@ server's OpenCL/api-docs repository.
             </require>
             <require>
                 <command name="clSetPerfHintQCOM"/>
-            </require>
-        </extension>
-        <extension name="cl_ext_image_unorm_int_2_101010" revision="1.0.0" depends="CL_VERSION_1_2" supported="opencl">
-            <require group="cl_channel_type">
-                <enum name="CL_UNORM_INT_2_101010_EXT"/>
             </require>
         </extension>
         <extension name="cl_ext_image_tiling_control" revision="0.2.0" depends="CL_VERSION_3_0" supported="opencl">
