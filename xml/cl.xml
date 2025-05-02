@@ -7252,7 +7252,7 @@ server's OpenCL/api-docs repository.
             <require>
                 <type name="CL/cl.h"/>
             </require>
-            <require comment="cl_external_semaphore_handle_type_khr">
+            <require group="cl_external_semaphore_handle_type_khr">
                 <enum name="CL_SEMAPHORE_HANDLE_D3D12_FENCE_KHR"/>
             </require>
         </extension>
