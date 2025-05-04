@@ -7347,7 +7347,7 @@ server's OpenCL/api-docs repository.
             <require>
                 <type name="CL/cl.h"/>
             </require>
-            <require comment="cl_external_memory_handle_type_khr">
+            <require group="cl_external_memory_handle_type_khr">
                 <enum name="CL_EXTERNAL_MEMORY_HANDLE_ANDROID_HARDWARE_BUFFER_KHR"/>
             </require>
         </extension>
