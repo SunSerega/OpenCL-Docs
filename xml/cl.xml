@@ -7734,7 +7734,7 @@ server's OpenCL/api-docs repository.
             </require>
         </extension>
         <extension name="cl_ext_image_unsigned_10x6_12x4_14x2" revision="1.0.0" depends="CL_VERSION_1_2" supported="opencl">
-            <require comment="cl_channel_type">
+            <require group="cl_channel_type">
                 <enum name="CL_UNSIGNED_INT10X6_EXT"/>
                 <enum name="CL_UNSIGNED_INT12X4_EXT"/>
                 <enum name="CL_UNSIGNED_INT14X2_EXT"/>
